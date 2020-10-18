@@ -1,0 +1,71 @@
+﻿@model KTR.Models.Recipes
+
+@{
+        ViewData["Title"] = "Create";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+
+<h2>Create</h2>
+
+<h4>New Recipe</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Rname" class="control-label"></label>
+                <input asp-for="Rname" class="form-control" />
+                <span asp-validation-for="Rname" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="UserId" class="control-label"></label>
+                    <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                </div>*@
+            <div class="form-group">
+                <label asp-for="Servings" class="control-label"></label>
+                <input asp-for="Servings" class="form-control" />
+                <span asp-validation-for="Servings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CatName"></select>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="StatusId" class="control-label"></label>
+                    <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MainId" class="control-label"></label>
+                    <select asp-for="MainId" class="form-control" asp-items="ViewBag.MainId"></select>
+                </div>*@
+            <div class="form-group">
+                <label for="Photo">Profile Photo</label>
+                <input id="FilePhoto" type="file" name="FilePhoto" />
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="UserAccountId" class="control-label"></label>
+                    <input asp-for="UserAccountId" class="form-control" value="@userManager.GetUserId(User)" />
+                    <span asp-validation-for="UserAccountId" class="text-danger"></span>
+                </div>*@
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+  

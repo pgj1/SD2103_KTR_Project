@@ -1,0 +1,61 @@
+﻿@model KTR.ViewModels.RecipeViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Recipe</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Rname)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Servings)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Servings)
+        </dd>
+        @*<dt>
+                @Html.DisplayNameFor(model => model.LastUpdated)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastUpdated)
+            </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.CatName) Category
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CatName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MainName) Main Ingredient
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MainName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StatusName) Status
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StatusName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User) Owner
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit</a> |
+    <a asp-action="Index">Back to Recipe List</a>
+</div>
