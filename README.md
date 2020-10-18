@@ -19,21 +19,21 @@
 		since private recipes are only accessible by the recipe owner. Your recipes are 
 		only accessible by others if you designate the recipe as shared.  <br>
 		The app will incorporate the following: <br>
-		-TECH STACK <br>
+		TECH STACK <br>
 		   - C# <br>
 		   - HTML <br>
 		   - CSS <br>
 		   - Microsoft SQL Server <br>
 		   - Microsoft Visual Studio, ASP.NET <br>
 		   - SQL Database (minimum of 5 tables required). <br>
-		- FEATURES <br>
+		 FEATURES <br>
 		  - Visitors can view a list of recipe names and short descriptions <br>
 		  - Only registered users may upload recipes <br>
 		  - Registered users can view shared recipes details <br>
 		  - Registered users determine visibility of their recipes (shared vs private) <br>
 		  - Registered users can view, edit and delete their own recipes <br>
 		  - Web App Administrator will have complete control over all recipe <br>
-		- PAGES <br>
+		PAGES <br>
                   - Welcome/Home <br>
                   - Login <br>
 		  - Manage Account <br>
