@@ -1,8 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace KTR.Models
 {
@@ -17,14 +15,14 @@ namespace KTR.Models
         {
         }
 
-        //public virtual DbSet<RecipeAuditLog> RecipeAuditLog { get; set; }
-        public virtual DbSet<Recipes> Recipes { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<RecipeCategory> RecipeCategories { get; }
-        public virtual DbSet<MainIngredient> MainIngredients { get; }
-        public virtual DbSet<RecipeStatus> RecipeStatuses { get; }
         public virtual DbSet<Ingredients> Ingredients { get; set; }
-        public virtual DbSet<Preparation> Preparations { get; set; }
+        public virtual DbSet<MainIngredient> MainIngredient { get; set; }
+        public virtual DbSet<Preparation> Preparation { get; set; }
+        public virtual DbSet<RecipeAuditLog> RecipeAuditLog { get; set; }
+        public virtual DbSet<RecipeCategory> RecipeCategory { get; set; }
+        public virtual DbSet<Recipes> Recipes { get; set; }
+        public virtual DbSet<RecipeStatus> RecipeStatus { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,115 +35,190 @@ namespace KTR.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<RecipeAuditLog>(entity =>
-            //{
-            //    entity.HasKey(e => e.RecipeAuditId);
+            modelBuilder.Entity<Ingredients>(entity =>
+            {
+                entity.HasKey(e => e.IngredientId);
 
-            //    entity.ToTable("Recipe_Audit_Log");
+                entity.Property(e => e.Amt)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
-            //    entity.Property(e => e.RecipeAuditId).HasColumnName("RecipeAuditID");
+                entity.Property(e => e.Item)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-            //    entity.Property(e => e.CategoryId).HasColumnName("Category_Id");
+                entity.Property(e => e.LastUpdated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
-            //    entity.Property(e => e.CategoryIdOld).HasColumnName("Category_Id_old");
+                entity.Property(e => e.Prep)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
 
-            //    entity.Property(e => e.Description)
-            //        .HasMaxLength(255)
-            //        .IsUnicode(false);
+                entity.Property(e => e.Unit)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
 
-            //    entity.Property(e => e.DescriptionOld)
-            //        .HasColumnName("Description_old")
-            //        .HasMaxLength(255)
-            //        .IsUnicode(false);
+                entity.HasOne(d => d.Recipe)
+                    .WithMany(p => p.Ingredients)
+                    .HasForeignKey(d => d.RecipeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Ingredient__R_Id__440B1D61");
+            });
 
-            //    entity.Property(e => e.MainId).HasColumnName("Main_Id");
+            modelBuilder.Entity<MainIngredient>(entity =>
+            {
+                entity.HasKey(e => e.MainId);
 
-            //    entity.Property(e => e.MainIdOld).HasColumnName("Main_Id_old");
+                entity.Property(e => e.MainName)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+            });
 
-            //    entity.Property(e => e.PhotoPath)
-            //        .HasMaxLength(255)
-            //        .IsUnicode(false);
+            modelBuilder.Entity<Preparation>(entity =>
+            {
+                entity.HasKey(e => e.PrepId);
 
-            //    entity.Property(e => e.PhotoPathOld)
-            //        .HasColumnName("PhotoPath_old")
-            //        .HasMaxLength(255)
-            //        .IsUnicode(false);
+                entity.Property(e => e.Instr)
+                    .IsRequired()
+                    .HasColumnType("text");
 
-            //    entity.Property(e => e.RecipeId).HasColumnName("Recipe_Id");
+                entity.Property(e => e.Updated)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
-            //    entity.Property(e => e.Rname)
-            //        .HasColumnName("RName")
-            //        .HasMaxLength(50)
-            //        .IsUnicode(false);
+                entity.HasOne(d => d.Recipe)
+                    .WithMany(p => p.Preparation)
+                    .HasForeignKey(d => d.RecipeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Preparatio__R_id__46E78A0C");
+            });
 
-            //    entity.Property(e => e.RnameOld)
-            //        .HasColumnName("RName_old")
-            //        .HasMaxLength(50)
-            //        .IsUnicode(false);
+            modelBuilder.Entity<RecipeAuditLog>(entity =>
+            {
+                entity.HasKey(e => e.RecipeAuditId);
 
-            //    entity.Property(e => e.ServingsOld).HasColumnName("Servings_old");
+                entity.ToTable("Recipe_Audit_Log");
 
-            //    entity.Property(e => e.StatusId).HasColumnName("Status_Id");
+                entity.Property(e => e.RecipeAuditId).HasColumnName("RecipeAuditID");
 
-            //    entity.Property(e => e.StatusIdOld).HasColumnName("Status_Id_old");
+                entity.Property(e => e.CategoryIdOld).HasColumnName("CategoryId_old");
 
-            //    entity.Property(e => e.UpdatedAt)
-            //        .HasColumnName("updated_at")
-            //        .HasColumnType("datetime");
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-            //    entity.Property(e => e.UpdatedBy)
-            //        .HasColumnName("updated_by")
-            //        .HasMaxLength(50)
-            //        .IsUnicode(false);
-            //});
-            
+                entity.Property(e => e.DescriptionOld)
+                    .HasColumnName("Description_old")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MainIdOld)
+                     .HasColumnName("MainId_old");
+
+                entity.Property(e => e.PhotoPath)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PhotoPathOld)
+                    .HasColumnName("PhotoPath_old")
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RecipeName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RecipeNameOld)
+                    .HasColumnName("RecipeName_old")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ServingsOld).HasColumnName("Servings_old");
+
+                entity.Property(e => e.StatusId).HasColumnName("Status_Id");
+
+                entity.Property(e => e.StatusIdOld).HasColumnName("StatusId_old");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnName("Updated_at")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasColumnName("Updated_by")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RecipeCategory>(entity =>
+            {
+                entity.HasKey(e => e.CategoryId);
+
+                entity.Property(e => e.CatName)
+                    .IsRequired()
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Recipes>(entity =>
             {
                 entity.HasKey(e => e.RecipeId);
 
-                entity.Property(e => e.RecipeId)
-                     .HasColumnName("Recipe_Id");
-
-                entity.Property(e => e.CategoryId)
-                     .HasColumnName("Category_Id");
-
                 entity.Property(e => e.Description)
-                    .HasColumnName("Description")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.LastUpdated)
-                    .HasColumnName("Last_Updated")
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.MainId)
-                     .HasColumnName("Main_Id");
-
                 entity.Property(e => e.PhotoPath)
-                    .HasColumnName("PhotoPath")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.RegId)
-                     .HasColumnName("RegId")
-                     .HasMaxLength(450);
-
-                entity.Property(e => e.Rname)
+                entity.Property(e => e.RecipeName)
                     .IsRequired()
-                    .HasColumnName("RName")
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.StatusId)
-                     .HasColumnName("Status_Id");
+                entity.Property(e => e.RegId).HasMaxLength(450);
+
+                entity.HasOne(d => d.CatName)
+                    .WithMany(p => p.Recipes)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Recipes__C_Id__3F466844");
+
+                entity.HasOne(d => d.Main)
+                    .WithMany(p => p.Recipes)
+                    .HasForeignKey(d => d.MainId)
+                    .HasConstraintName("FK__Recipes__M_ID__4E88ABD4");
+
+                entity.HasOne(d => d.StatusName)
+                    .WithMany(p => p.Recipes)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Recipes__S_Id__403A8C7D");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Recipes)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Recipes__UserId__3C69FB99");
+            });
 
+            modelBuilder.Entity<RecipeStatus>(entity =>
+            {
+                entity.HasKey(e => e.StatusId);
+
+                entity.Property(e => e.StatusName)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Users>(entity =>
@@ -157,7 +230,6 @@ namespace KTR.Models
                     .IsUnique();
 
                 entity.Property(e => e.DisplayName)
-                    .HasColumnName("DisplayName")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -179,71 +251,8 @@ namespace KTR.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.RegId)
-                    .HasMaxLength(450);
+                     .HasMaxLength(450);
             });
-
-            modelBuilder.Entity<Ingredients>(entity =>
-            {
-                entity.HasKey(e => e.IngredientId);
-
-                entity.Property(e => e.Amt)
-                    .HasColumnName("Amt")
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Unit)
-                    .IsRequired()
-                    .HasColumnName("Unit")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Item)
-                    .IsRequired()
-                    .HasColumnName("Item")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Prep)
-                    .IsRequired()
-                    .HasColumnName("Prep")
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastUpdated)
-                   .HasColumnName("Last_Updated")
-                   .HasColumnType("datetime")
-                   .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.RecipeId)
-                    .IsRequired();
-
-            });
-
-
-            modelBuilder.Entity<Preparation>(entity =>
-            {
-                entity.HasKey(e => e.PrepId);
-
-                entity.Property(e => e.Step)
-                    .HasColumnName("Step")
-                    .IsRequired()
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Instr)
-                    .IsRequired()
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Updated)
-                   .IsRequired()
-                   .HasColumnName("Updated")
-                   .HasColumnType("datetime")
-                   .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.RecipeId)
-                    .IsRequired();
-            });
-
         }
     }
 }

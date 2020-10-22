@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace KTR.Models
 {
     public partial class Ingredients
     {
-        [Key]
         public int IngredientId { get; set; }
         public string Amt { get; set; }
         public string Unit { get; set; }

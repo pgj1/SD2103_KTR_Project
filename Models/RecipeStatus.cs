@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace KTR.Models
 {
@@ -12,7 +10,6 @@ namespace KTR.Models
             Recipes = new HashSet<Recipes>();
         }
 
-        [Key]
         public int StatusId { get; set; }
         public string StatusName { get; set; }
 

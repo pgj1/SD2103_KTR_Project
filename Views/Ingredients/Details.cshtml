@@ -1,0 +1,55 @@
+﻿@model KTR.Models.Ingredients
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Ingredients</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Amt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Unit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Item)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Item)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Prep)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Prep)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdated)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Recipe.RecipeName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IngredientId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -35,17 +35,21 @@ namespace KTR.Controllers
        
         public async Task<IActionResult> Index()
         {
-              ///       var kTRContext = _context.Recipes.Include(r => r.CategoryId).Include(r => r.MainId).Include(r => r.StatusId).Include(r => r.UserId).Include(r => r.Description).Include(r => r.Servings).Include(r => r.PhotoPath).Include(m => m.RecipeId);
-              //       return View(await kTRContext.ToListAsync());
+            ///       var kTRContext = _context.Recipes.Include(r => r.CategoryId).Include(r => r.MainId).Include(r => r.StatusId).Include(r => r.UserId).Include(r => r.Description).Include(r => r.Servings).Include(r => r.PhotoPath).Include(m => m.RecipeId);
+            //       return View(await kTRContext.ToListAsync());
 
+            ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
+            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
+            ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+            ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
 
             return View(await _context.Recipes.ToListAsync());
         }
 
         // GET: Recipes/Details/5
         public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+         {    
+           if (id == null)
             {
                 return NotFound();
             }
@@ -61,6 +65,11 @@ namespace KTR.Controllers
                 return NotFound();
             }
 
+            ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
+            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
+            ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+            ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+
             return View(recipes);
         }
 
@@ -68,10 +77,10 @@ namespace KTR.Controllers
        // [Authorize]
         public IActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(_context.Recipes, "CategoryId","CatName");
-            ViewBag.MainId = new SelectList(_context.Recipes, "MainId", "MainName");
-            ViewBag.StatusId = new SelectList(_context.Recipes, "StatusId", "StatusName");
-            ViewBag.UserId = new SelectList(_context.Users, "UserId", "Email");
+            ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId","CatName");
+            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
+            ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+            ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
             return View();
         }
 
@@ -80,17 +89,31 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeId,Rname,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId")] Recipes recipes)
+        public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,PhotoPath,RegId")] Recipes recipes, IFormFile FilePhoto)
         {
+
+            if (FilePhoto.Length > 0)
+            {
+
+                string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\";
+                var fileName = Path.GetFileName(FilePhoto.FileName);
+
+                using (var stream = System.IO.File.Create(photoPath + fileName))
+                {
+                    await FilePhoto.CopyToAsync(stream);
+                    recipes.PhotoPath = fileName;
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(recipes);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.CategoryId = new SelectList(_context.Recipes, "CategoryId", "CatName", recipes.CategoryId);
-            ViewBag.MainId = new SelectList(_context.Recipes, "MainId", "MainName", recipes.MainId);
-            ViewBag.StatusId = new SelectList(_context.Recipes, "StatusId", "StatusName", recipes.StatusId);
+            ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
+            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
+            ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
             ViewBag.UserId = new SelectList(_context.Users, "UserId", "Email", recipes.UserId);
             return View(recipes);
         }
@@ -108,9 +131,9 @@ namespace KTR.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Recipes, "CategoryId", "CatName", recipes.CategoryId);
-            ViewData["MainId"] = new SelectList(_context.Recipes, "MainId", "MainName", recipes.MainId);
-            ViewData["StatusId"] = new SelectList(_context.Recipes, "StatusId", "StatusName", recipes.StatusId);
+            ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
+            ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
+            ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", recipes.UserId);
             return View(recipes);
         }
@@ -120,11 +143,24 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Rname,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,Description")] Recipes recipes)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,RecipeName,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,Description,PhotoPath,RegId")] Recipes recipes, IFormFile FilePhoto)
         {
             if (id != recipes.RecipeId)
             {
                 return NotFound();
+            }
+
+            if (FilePhoto.Length > 0)
+            {
+
+                string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\"; 
+                var fileName = Path.GetFileName(FilePhoto.FileName);
+
+                using (var stream = System.IO.File.Create(photoPath + fileName))
+                {
+                    await FilePhoto.CopyToAsync(stream);
+                    recipes.PhotoPath = fileName;
+                }
             }
 
             if (ModelState.IsValid)
@@ -147,9 +183,9 @@ namespace KTR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Recipes, "CategoryId", "CatName", recipes.CategoryId);
-            ViewData["MainId"] = new SelectList(_context.Recipes, "MainId", "MainName", recipes.MainId);
-            ViewData["StatusId"] = new SelectList(_context.Recipes, "StatusId", "StatusName", recipes.StatusId);
+            ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
+            ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
+            ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", recipes.UserId);
             return View(recipes);
         }
@@ -191,5 +227,15 @@ namespace KTR.Controllers
         {
             return _context.Recipes.Any(e => e.RecipeId == id);
         }
+
+        [Authorize]
+        public IActionResult RecipeList()
+        {
+            return View();
+        }
+
+
+
     }
 }
+

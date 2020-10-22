@@ -9,22 +9,23 @@ using KTR.Models;
 
 namespace KTR.Controllers
 {
-    public class UsersController : Controller
+    public class IngredientsController : Controller
     {
         private readonly KTRContext _context;
 
-        public UsersController(KTRContext context)
+        public IngredientsController(KTRContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Ingredients
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            var kTRContext = _context.Ingredients.Include(i => i.Recipe);
+            return View(await kTRContext.ToListAsync());
         }
 
-        // GET: Users/Details/5
+        // GET: Ingredients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +33,42 @@ namespace KTR.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (users == null)
+            var ingredients = await _context.Ingredients
+                .Include(i => i.Recipe)
+                .FirstOrDefaultAsync(m => m.IngredientId == id);
+            if (ingredients == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(ingredients);
         }
 
-        // GET: Users/Create
-        public IActionResult CreateProfile()
+        // GET: Ingredients/Create
+        public IActionResult Create()
         {
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Ingredients/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
+        public async Task<IActionResult> Create([Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated")] Ingredients ingredients)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
+                _context.Add(ingredients);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Recipes));
+                return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", ingredients.RecipeId);
+            return View(ingredients);
         }
 
-        // GET: Users/Edit/5
+        // GET: Ingredients/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +76,23 @@ namespace KTR.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var ingredients = await _context.Ingredients.FindAsync(id);
+            if (ingredients == null)
             {
                 return NotFound();
             }
-            return View(users);
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", ingredients.RecipeId);
+            return View(ingredients);
         }
 
-        // POST: Users/Edit/5
+        // POST: Ingredients/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated")] Ingredients ingredients)
         {
-            if (id != users.UserId)
+            if (id != ingredients.IngredientId)
             {
                 return NotFound();
             }
@@ -96,12 +101,12 @@ namespace KTR.Controllers
             {
                 try
                 {
-                    _context.Update(users);
+                    _context.Update(ingredients);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsersExists(users.UserId))
+                    if (!IngredientsExists(ingredients.IngredientId))
                     {
                         return NotFound();
                     }
@@ -112,10 +117,11 @@ namespace KTR.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", ingredients.RecipeId);
+            return View(ingredients);
         }
 
-        // GET: Users/Delete/5
+        // GET: Ingredients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +129,31 @@ namespace KTR.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (users == null)
+            var ingredients = await _context.Ingredients
+                .Include(i => i.Recipe)
+                .FirstOrDefaultAsync(m => m.IngredientId == id);
+            if (ingredients == null)
             {
                 return NotFound();
             }
 
-            return View(users);
+            return View(ingredients);
         }
 
-        // POST: Users/Delete/5
+        // POST: Ingredients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            _context.Users.Remove(users);
+            var ingredients = await _context.Ingredients.FindAsync(id);
+            _context.Ingredients.Remove(ingredients);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsersExists(int id)
+        private bool IngredientsExists(int id)
         {
-            return _context.Users.Any(e => e.UserId == id);
+            return _context.Ingredients.Any(e => e.IngredientId == id);
         }
     }
 }

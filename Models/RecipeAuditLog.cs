@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace KTR.Models
 {
     public partial class RecipeAuditLog
     {
-        [Key]
         public int RecipeAuditId { get; set; }
         public int? RecipeId { get; set; }
-        public string Rname { get; set; }
-        public string RnameOld { get; set; }
+        public string RecipeName { get; set; }
+        public string RecipeNameOld { get; set; }
         public int? Servings { get; set; }
         public int? ServingsOld { get; set; }
         public int? CategoryId { get; set; }

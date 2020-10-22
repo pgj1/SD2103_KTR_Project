@@ -8,22 +8,26 @@
 <h2>Recipes</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-controller="Recipes" asp-action="Create">Create New</a>
 </p>
+   
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Rname)
+                @Html.DisplayNameFor(model => model.RecipeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Servings)
             </th>
-            @*  
-             <th>
-                @Html.DisplayNameFor(model => model.LastUpdated)
-            </th>
-                *@
+            @*
+                 <th>
+                    @Html.DisplayNameFor(model => model.LastUpdated)
+                </th>
+            *@
             <th>
                 @Html.DisplayNameFor(model => model.CategoryId)
             </th>
@@ -36,40 +40,45 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Servings)
-            </td>
-            @*           <td>
-            @Html.DisplayFor(modelItem => item.LastUpdated)
-        </td>
-            *@
-            <td>
-                @Html.DisplayFor(modelItem => item.CatName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MainName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecipeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Servings)
+                </td>
+                @*           <td>
+                        @Html.DisplayFor(modelItem => item.LastUpdated)
+                    </td>
+                *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    | <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
+                    @*<a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>*@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

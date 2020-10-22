@@ -1,0 +1,58 @@
+﻿@model KTR.Models.Ingredients
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Ingredients</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Amt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Amt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Unit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Item)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Item)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Prep)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Prep)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdated)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Recipe.RecipeName)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IngredientId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

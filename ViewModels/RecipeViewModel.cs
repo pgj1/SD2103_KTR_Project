@@ -15,38 +15,38 @@ namespace KTR.ViewModels
     public class RecipeViewModel
     {
 
-        public int RecipeId { get; set; }
+        public Recipes RecipeId { get; set; }
 
         [Required]
         [Display(Name = "Recipe Name")]
-        public string Rname { get; set; }
+        public Recipes RecipeName { get; set; }
 
       [Required]
-        public int UserId { get; set; }
+        public Users UserId { get; set; }
 
        [Required]
-        public int Servings { get; set; }
+        public Recipes Servings { get; set; }
 
         [Required]
         [Display(Name = "Category")]
-        public int CategoryId { get; set; }
+        public RecipeCategory CategoryId { get; set; }
         public IEnumerable<SelectListItem> CatName { get; set; }
 
         [Required]
         [Display(Name = "Status")]
-        public int StatusId { get; set; }
+        public RecipeStatus StatusId { get; set; }
         public IEnumerable<SelectListItem> StatusName {get; set;}
        
         public DateTime LastUpdated { get; set; }
 
         [Required]
         [Display(Name = "Main Ingredient")]
-        public int? MainId { get; set; }
+        public MainIngredient MainId { get; set; }
         public IEnumerable<SelectListItem> MainName { get; set; }
 
-        public string Description { get; set; }
-        public string PhotoPath { get; set; }
-        public string RegId { get; set; }
+        public Recipes Description { get; set; }
+        public Recipes PhotoPath { get; set; }
+        public Recipes RegId { get; set; }
 
         [Required]
         [Display(Name = "Submitted By")]
@@ -59,5 +59,8 @@ namespace KTR.ViewModels
         public IEnumerable<RecipeStatus> recipeStatus;
         public IEnumerable<Users> displayName;
         public IEnumerable<Recipes> Recipe_Id;
+
+        public IEnumerator<Recipes> model;
+
     }
 }
