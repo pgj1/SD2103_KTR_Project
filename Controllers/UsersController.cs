@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KTR.Models;
+using KTR.ViewModels;
 
 namespace KTR.Controllers
 {
@@ -42,8 +43,17 @@ namespace KTR.Controllers
             return View(users);
         }
 
-        // GET: Users/Create
+
+        // GET: UserProfile/Create
         public IActionResult CreateProfile()
+        {
+            return View();
+        }
+
+
+
+        // GET: Users/Create
+        public IActionResult CreateUser()
         {
             return View();
         }
@@ -53,16 +63,35 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
+        public async Task<IActionResult> CreateUser([Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(users);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Recipes));
+                return RedirectToAction("Index", "Recipes");
             }
             return View(users);
         }
+
+
+        // POST: Users/CreateProfule
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateProfile([Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(users);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Recipes");
+                //return RedirectToAction(nameof(Recipes));
+            }
+            return View(users);
+        }
+
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)

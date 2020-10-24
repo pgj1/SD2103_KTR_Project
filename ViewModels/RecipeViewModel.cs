@@ -21,10 +21,10 @@ namespace KTR.ViewModels
         [Display(Name = "Recipe Name")]
         public Recipes RecipeName { get; set; }
 
-      [Required]
+        [Required]
         public Users UserId { get; set; }
 
-       [Required]
+        [Required]
         public Recipes Servings { get; set; }
 
         [Required]
@@ -35,8 +35,8 @@ namespace KTR.ViewModels
         [Required]
         [Display(Name = "Status")]
         public RecipeStatus StatusId { get; set; }
-        public IEnumerable<SelectListItem> StatusName {get; set;}
-       
+        public IEnumerable<SelectListItem> StatusName { get; set; }
+
         public DateTime LastUpdated { get; set; }
 
         [Required]
@@ -54,6 +54,7 @@ namespace KTR.ViewModels
         public IEnumerable<SelectListItem> DisplayName;
 
 
+      
         public IEnumerable<RecipeCategory> recipeCategory;
         public IEnumerable<MainIngredient> mainIngredient;
         public IEnumerable<RecipeStatus> recipeStatus;

@@ -21,6 +21,9 @@ namespace KTR.ViewModels
         [Required]
         public string DisplayName { get; set; }
         public string RegId { get; set; }
+		
+        [Required]
+        public string Username { get; set; }		
 
         [Required, DataType(DataType.Password)]
         public string Password { get; set; }
@@ -28,8 +31,7 @@ namespace KTR.ViewModels
         [DataType(DataType.Password), Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
 
-        [Required]
-        public string Username { get; set; }
+
 
 
 

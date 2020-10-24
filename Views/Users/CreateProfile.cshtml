@@ -1,10 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-@model KTR.Models.Users
+@model KTR.ViewModels.NewUserViewModel
 
 @{
-    ViewData["Title"] = "Create User Account";
+    ViewData["Title"] = "Create Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
  
@@ -41,15 +41,15 @@
 
             <div class="form-group">
                 <label asp-for="RegId" class="control-label">Registration ID Number</label>
-                 <input readonly="readonly"  asp-for="RegId" class="form-control" value="@UserManager.GetUserId(User)" /> 
-                 <span asp-validation-for="RegId" class="text-danger"></span>
+                <input readonly="readonly" asp-for="RegId" class="form-control" value="@UserManager.GetUserId(User)" />
+                <span asp-validation-for="RegId" class="text-danger"></span>
             </div>
 
 
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
         </form>
     </div>
 </div>

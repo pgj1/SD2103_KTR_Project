@@ -84,8 +84,8 @@ namespace KTR
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-       //     SetupSecurity.SeedRoles(roleManager);
-       //     SetupSecurity.SeedUsers(userManager);
+            SetupSecurity.SeedRoles(roleManager);
+            SetupSecurity.SeedUsers(userManager);
         }
     }
 }
