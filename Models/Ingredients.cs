@@ -12,7 +12,10 @@ namespace KTR.Models
         public string Prep { get; set; }
         public int RecipeId { get; set; }
         public DateTime LastUpdated { get; set; }
+        public string RegId { get; set; }
+
 
         public Recipes Recipe { get; set; }
+        public Users Users { get; set; }
     }
 }

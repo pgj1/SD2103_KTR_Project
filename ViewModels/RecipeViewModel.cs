@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KTR.ViewModels;
 using KTR.Models;
-
+ 
 
 namespace KTR.ViewModels
 {
@@ -30,11 +30,13 @@ namespace KTR.ViewModels
         [Required]
         [Display(Name = "Category")]
         public RecipeCategory CategoryId { get; set; }
+
         public IEnumerable<SelectListItem> CatName { get; set; }
 
         [Required]
         [Display(Name = "Status")]
         public RecipeStatus StatusId { get; set; }
+
         public IEnumerable<SelectListItem> StatusName { get; set; }
 
         public DateTime LastUpdated { get; set; }
@@ -42,10 +44,14 @@ namespace KTR.ViewModels
         [Required]
         [Display(Name = "Main Ingredient")]
         public MainIngredient MainId { get; set; }
+
         public IEnumerable<SelectListItem> MainName { get; set; }
 
         public Recipes Description { get; set; }
+
         public Recipes PhotoPath { get; set; }
+        
+        [Required]
         public Recipes RegId { get; set; }
 
         [Required]
@@ -53,8 +59,7 @@ namespace KTR.ViewModels
         public Users User { get; set; }
         public IEnumerable<SelectListItem> DisplayName;
 
-
-      
+                      
         public IEnumerable<RecipeCategory> recipeCategory;
         public IEnumerable<MainIngredient> mainIngredient;
         public IEnumerable<RecipeStatus> recipeStatus;

@@ -56,7 +56,7 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated")] Ingredients ingredients)
+        public async Task<IActionResult> Create([Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,RegId,UserId")] Ingredients ingredients)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated")] Ingredients ingredients)
+        public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,RegId,UserId")] Ingredients ingredients)
         {
             if (id != ingredients.IngredientId)
             {

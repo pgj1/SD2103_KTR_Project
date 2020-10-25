@@ -38,7 +38,8 @@ namespace KTR.Controllers
             ///       var kTRContext = _context.Recipes.Include(r => r.CategoryId).Include(r => r.MainId).Include(r => r.StatusId).Include(r => r.UserId).Include(r => r.Description).Include(r => r.Servings).Include(r => r.PhotoPath).Include(m => m.RecipeId);
             //       return View(await kTRContext.ToListAsync());
 
-            ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
+            //ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
+            ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
             ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
             ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
             ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
@@ -81,6 +82,7 @@ namespace KTR.Controllers
             ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
             ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
             ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+
             return View();
         }
 
@@ -92,7 +94,7 @@ namespace KTR.Controllers
         public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,PhotoPath,RegId")] Recipes recipes, IFormFile FilePhoto)
         {
 
-            if (FilePhoto.Length > 0)
+            if (FilePhoto.FileName is null )
             {
 
                 string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\";
@@ -105,6 +107,8 @@ namespace KTR.Controllers
                 }
             }
 
+           
+
             if (ModelState.IsValid)
             {
                 _context.Add(recipes);
@@ -114,7 +118,7 @@ namespace KTR.Controllers
             ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
             ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
             ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
-            ViewBag.UserId = new SelectList(_context.Users, "UserId", "Email", recipes.UserId);
+            ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName", recipes.UserId);
             return View(recipes);
         }
 
@@ -134,7 +138,7 @@ namespace KTR.Controllers
             ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
             ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
             ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", recipes.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Email", "UserId", recipes.UserId);
             return View(recipes);
         }
 
@@ -186,7 +190,7 @@ namespace KTR.Controllers
             ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
             ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
             ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "Email", recipes.UserId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Email", "UserId", recipes.UserId);
             return View(recipes);
         }
 
