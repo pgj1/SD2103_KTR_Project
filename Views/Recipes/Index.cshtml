@@ -62,9 +62,10 @@
                         @Html.DisplayFor(modelItem => item.LastUpdated)
                     </td>
                 *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
-                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+                @*@Html.DisplayFor(modelItem => item.RecipeCategory.CatName)*@
+            </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MainId)
                 </td>

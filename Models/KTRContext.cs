@@ -15,6 +15,7 @@ namespace KTR.Models
         {
         }
 
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Ingredients> Ingredients { get; set; }
         public virtual DbSet<MainIngredient> MainIngredient { get; set; }
         public virtual DbSet<Preparation> Preparation { get; set; }
@@ -33,8 +34,34 @@ namespace KTR.Models
             }
         }
 
+        // ************* ASPNET USERS *********************
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
+
+            // ************* INGREDIENTS ********************* 
+
             modelBuilder.Entity<Ingredients>(entity =>
             {
                 entity.HasKey(e => e.IngredientId);
@@ -43,6 +70,10 @@ namespace KTR.Models
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IRegId)
+                    .HasColumnName("IRegId")
+                    .HasMaxLength(450);
 
                 entity.Property(e => e.Item)
                     .IsRequired()
@@ -62,12 +93,20 @@ namespace KTR.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.Recipe)
+                entity.HasOne(d => d.IReg)
                     .WithMany(p => p.Ingredients)
-                    .HasForeignKey(d => d.RecipeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Ingredient__R_Id__440B1D61");
+                    .HasForeignKey(d => d.IRegId)
+                    .HasConstraintName("FK_Ingredients_AspNetUsers");
+
+                entity.HasOne(d => d.Recipe)
+                   .WithMany(p => p.Ingredients)
+                   .HasForeignKey(d => d.RecipeId)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK__Ingredient__R_Id__440B1D61");
+
             });
+
+            // ************* MAIN INGREDIENT *********************
 
             modelBuilder.Entity<MainIngredient>(entity =>
             {
@@ -79,6 +118,10 @@ namespace KTR.Models
                     .IsUnicode(false);
             });
 
+
+
+            // ************* PREPARATION *********************
+
             modelBuilder.Entity<Preparation>(entity =>
             {
                 entity.HasKey(e => e.PrepId);
@@ -87,16 +130,27 @@ namespace KTR.Models
                     .IsRequired()
                     .HasColumnType("text");
 
+                entity.Property(e => e.PRegId)
+                    .HasColumnName("PRegId")
+                    .HasMaxLength(450);
+
                 entity.Property(e => e.Updated)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.HasOne(d => d.Recipe)
+                entity.HasOne(d => d.PReg)
                     .WithMany(p => p.Preparation)
-                    .HasForeignKey(d => d.RecipeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Preparatio__R_id__46E78A0C");
+                    .HasForeignKey(d => d.PRegId)
+                    .HasConstraintName("FK_Preparation_AspNetUsers");
+
+                entity.HasOne(d => d.Recipe)
+                  .WithMany(p => p.Preparation)
+                  .HasForeignKey(d => d.RecipeId)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK__Preparatio__R_id__46E78A0C");
             });
+
+// ************************RECIPE AUDIT LOG *******************************
 
             modelBuilder.Entity<RecipeAuditLog>(entity =>
             {
@@ -154,6 +208,9 @@ namespace KTR.Models
                     .IsUnicode(false);
             });
 
+
+            // ************************RECIPE CATEGORY *******************************
+
             modelBuilder.Entity<RecipeCategory>(entity =>
             {
                 entity.HasKey(e => e.CategoryId);
@@ -163,6 +220,9 @@ namespace KTR.Models
                     .HasMaxLength(25)
                     .IsUnicode(false);
             });
+
+
+            // ************************RECIPES *******************************
 
             modelBuilder.Entity<Recipes>(entity =>
             {
@@ -211,6 +271,8 @@ namespace KTR.Models
                     .HasConstraintName("FK__Recipes__UserId__3C69FB99");
             });
 
+            // ************************RECIPE STATUS *******************************
+
             modelBuilder.Entity<RecipeStatus>(entity =>
             {
                 entity.HasKey(e => e.StatusId);
@@ -220,6 +282,9 @@ namespace KTR.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
             });
+
+
+            // ************************ USERS *******************************
 
             modelBuilder.Entity<Users>(entity =>
             {
@@ -253,6 +318,13 @@ namespace KTR.Models
                 entity.Property(e => e.RegId)
                      .HasMaxLength(450);
             });
+
+
+
+
+
+
+
         }
     }
 }

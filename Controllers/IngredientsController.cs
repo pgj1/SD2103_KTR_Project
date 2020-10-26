@@ -5,17 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using KTR.Models;
+using KTR.ViewModels;
+using System.IO;
+
 
 namespace KTR.Controllers
 {
     public class IngredientsController : Controller
     {
         private readonly KTRContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public IngredientsController(KTRContext context)
+        public IngredientsController(KTRContext context, UserManager<IdentityUser> userManager, IHostingEnvironment webroot)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Ingredients
@@ -24,6 +34,27 @@ namespace KTR.Controllers
             var kTRContext = _context.Ingredients.Include(i => i.Recipe);
             return View(await kTRContext.ToListAsync());
         }
+
+
+        // GET: Ingredients/Show/5
+        public async Task<IActionResult> Show(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ingredients = await _context.Ingredients
+                .Include(i => i.Recipe)
+                .FirstOrDefaultAsync(m => m.IngredientId == id);
+            if (ingredients == null)
+            {
+                return NotFound();
+            }
+
+            return View("IngredientsController","ShowIngredients");
+        }
+
 
         // GET: Ingredients/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -56,7 +87,7 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,RegId,UserId")] Ingredients ingredients)
+        public async Task<IActionResult> Create([Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,IRegId,UserId")] Ingredients ingredients)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +121,7 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,RegId,UserId")] Ingredients ingredients)
+        public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,IRegId,UserId")] Ingredients ingredients)
         {
             if (id != ingredients.IngredientId)
             {
@@ -155,5 +186,26 @@ namespace KTR.Controllers
         {
             return _context.Ingredients.Any(e => e.IngredientId == id);
         }
+
+        // Show Users their own ingredients so they can edit them
+
+        public async Task<IActionResult> ShowIngredients()
+        {
+
+            string ShowId = _userManager.GetUserId(User);
+            Ingredients profile = _context.Ingredients.FirstOrDefault(id => id.IRegId == ShowId);
+
+            if (profile == null)
+            {
+                return RedirectToAction("Recipes", "Index");
+            }
+
+            View(await _context.Ingredients.ToListAsync());
+            return View();
+
+        }
+
+
+
     }
 }

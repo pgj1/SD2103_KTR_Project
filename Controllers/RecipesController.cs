@@ -32,7 +32,7 @@ namespace KTR.Controllers
         }
 
         // GET: Recipes
-       
+
         public async Task<IActionResult> Index()
         {
             ///       var kTRContext = _context.Recipes.Include(r => r.CategoryId).Include(r => r.MainId).Include(r => r.StatusId).Include(r => r.UserId).Include(r => r.Description).Include(r => r.Servings).Include(r => r.PhotoPath).Include(m => m.RecipeId);
@@ -49,8 +49,8 @@ namespace KTR.Controllers
 
         // GET: Recipes/Details/5
         public async Task<IActionResult> Details(int? id)
-         {    
-           if (id == null)
+        {
+            if (id == null)
             {
                 return NotFound();
             }
@@ -75,10 +75,10 @@ namespace KTR.Controllers
         }
 
         // GET: Recipes/Create
-       // [Authorize]
+        // [Authorize]
         public IActionResult Create()
         {
-            ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId","CatName");
+            ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
             ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
             ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
             ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
@@ -94,7 +94,7 @@ namespace KTR.Controllers
         public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,PhotoPath,RegId")] Recipes recipes, IFormFile FilePhoto)
         {
 
-            if (FilePhoto.FileName is null )
+            if (FilePhoto.FileName is null)
             {
 
                 string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\";
@@ -107,7 +107,7 @@ namespace KTR.Controllers
                 }
             }
 
-           
+
 
             if (ModelState.IsValid)
             {
@@ -157,7 +157,7 @@ namespace KTR.Controllers
             if (FilePhoto.Length > 0)
             {
 
-                string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\"; 
+                string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\";
                 var fileName = Path.GetFileName(FilePhoto.FileName);
 
                 using (var stream = System.IO.File.Create(photoPath + fileName))
@@ -239,7 +239,67 @@ namespace KTR.Controllers
         }
 
 
+        // Show Users their own recipes so they can edit them
+
+        public async Task<IActionResult> ShowRecipes()
+        {
+
+            string ShowId = _userManager.GetUserId(User);
+            Recipes profile = _context.Recipes.FirstOrDefault(id => id.RegId == ShowId);
+
+            if (profile == null)
+            {
+                return RedirectToAction("Recipes", "Index");
+            }
+
+            View(await _context.Recipes.ToListAsync());
+            return View();
+        }
+
+
+
+        // Show Users their own ingredients so they can edit them
+
+        public async Task<IActionResult> ShowIngredients()
+        {
+
+            string ShowId = _userManager.GetUserId(User);
+            Ingredients profile = _context.Ingredients.FirstOrDefault(id => id.IRegId == ShowId);
+
+            if (profile == null)
+            {
+                return RedirectToAction("Recipes", "Index");
+            }
+
+            View(await _context.Ingredients.ToListAsync());
+            return View();
+
+        }
+
+
+        // Show Users their own ingredients so they can edit them
+
+        public async Task<IActionResult> ShowPrep()
+        {
+
+            string ShowId = _userManager.GetUserId(User);
+            Preparation profile = _context.Preparation.FirstOrDefault(id => id.PRegId == ShowId);
+
+            if (profile == null)
+            {
+                return RedirectToAction("Recipes", "Index");
+            }
+
+            View(await _context.Preparation.ToListAsync());
+            return View();
+
+        }
+
+
+
+
 
     }
+
 }
 

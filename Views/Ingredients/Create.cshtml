@@ -1,4 +1,6 @@
 ﻿@model KTR.Models.Ingredients
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> userManager
 
 @{
     ViewData["Title"] = "Create";
@@ -35,8 +37,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="RecipeId" class="control-label"></label>
-                <select asp-for="RecipeId" class ="form-control" asp-items="ViewBag.RecipeId"></select>
+                <select asp-for="RecipeId" class="form-control" asp-items="ViewBag.RecipeId"></select>
             </div>
+
+            <div class="form-group">
+                <label asp-for="IRegId" class="control-label"></label>
+                <input readonly="readonly" asp-for="IRegId" class="form-control" value="@userManager.GetUserId(User)" />
+                <span asp-validation-for="IRegId" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>

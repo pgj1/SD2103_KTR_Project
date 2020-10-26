@@ -31,7 +31,26 @@ namespace KTR.ViewModels
         [Display(Name = "Category")]
         public RecipeCategory CategoryId { get; set; }
 
+
+        public RecipeCategory catName  { get; set; }
+
+
+        public Ingredients Amt { get; set; }
+
+        public Ingredients Unit { get; set; }
+
+        public Ingredients Item { get; set; }
+
+        public Ingredients Prep { get; set; }
+
+        public Ingredients IRecipeId { get; set; }
+
+
+        public Ingredients IRegId { get; set; }
+
+
         public IEnumerable<SelectListItem> CatName { get; set; }
+
 
         [Required]
         [Display(Name = "Status")]
