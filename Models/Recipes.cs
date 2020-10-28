@@ -42,15 +42,18 @@ namespace KTR.Models
 
         public RecipeCategory CatName { get; set; }
 
-        public MainIngredient Main { get; set; }
+        public MainIngredient MainName { get; set; }
 
         public RecipeStatus StatusName { get; set; }
 
         public Users User { get; set; }
 
+        //public  Users DisplayName { get; set; }
+
         public ICollection<Ingredients> Ingredients { get; set; }
 
         public ICollection<Preparation> Preparation { get; set; }
+        //public IEnumerable<Recipes> MyRecipes { get; set; }
        
     }
 }

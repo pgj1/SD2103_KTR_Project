@@ -63,15 +63,15 @@
                     </td>
                 *@
             <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
+                @Html.DisplayFor(modelItem => item.CatName.CatName)
                 @*@Html.DisplayFor(modelItem => item.RecipeCategory.CatName)*@
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MainId)
+                    @Html.DisplayFor(modelItem => item.MainName.MainName)
                 </td>
                 <td>
                     @*@Html.DisplayFor(modelItem => item.StatusId)*@
-                    @Html.DisplayFor(modelItem => item.StatusId)
+                    @Html.DisplayFor(modelItem => item.StatusName.StatusName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserId)
@@ -87,3 +87,4 @@
     </tbody>
 </table>
 
+<a asp-controller= "Recipes" asp-action="ShowRecipes">Show My Recipes</a>

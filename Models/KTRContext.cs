@@ -253,7 +253,7 @@ namespace KTR.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Recipes__C_Id__3F466844");
 
-                entity.HasOne(d => d.Main)
+                entity.HasOne(d => d.MainName)
                     .WithMany(p => p.Recipes)
                     .HasForeignKey(d => d.MainId)
                     .HasConstraintName("FK__Recipes__M_ID__4E88ABD4");
@@ -269,6 +269,7 @@ namespace KTR.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Recipes__UserId__3C69FB99");
+
             });
 
             // ************************RECIPE STATUS *******************************

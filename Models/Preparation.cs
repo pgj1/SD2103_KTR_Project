@@ -14,7 +14,7 @@ namespace KTR.Models
 
         public AspNetUsers PReg { get; set; }
 
-        public Recipes RecipeName { get; set; }
+       // public Recipes RecipeName { get; set; }
 
         public Recipes Recipe { get; set; }
 

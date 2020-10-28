@@ -1,0 +1,91 @@
+﻿@model IEnumerable<KTR.Models.Recipes>
+@using KTR.Models;
+
+@using System.Collections.Generic;
+
+
+    @{
+        ViewData["Title"] = "My Recipes";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <h2>Recipes</h2>
+
+    <p>
+        <a asp-controller="Recipes" asp-action="Create">Create New</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @* @Html.DisplayNameFor(model => model.RecipeName)*@ Recipe Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Servings)
+                </th>
+                @*
+                     <th>
+                        @Html.DisplayNameFor(model => model.LastUpdated)
+                    </th>
+                *@
+                <th>
+                    @*@Html.DisplayNameFor(model => model.CategoryId)*@ Food Category
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.MainId)*@ Main Ingredient
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.StatusId)*@ Visibility
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.UserId)*@ Submitter
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecipeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Servings)
+                    </td>
+                    @*           <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdated)
+                        </td>
+                    *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryId)
+                        @*@Html.DisplayFor(modelItem => item.RecipeCategory.CatName)*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MainId)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.StatusId)*@
+                        @Html.DisplayFor(modelItem => item.StatusId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        | <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
+                        <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
+                        @*<a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>*@
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>

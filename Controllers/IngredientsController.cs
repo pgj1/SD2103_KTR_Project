@@ -28,7 +28,8 @@ namespace KTR.Controllers
             _userManager = userManager;
         }
 
-        // GET: Ingredients
+        // GET: Ingredients Index()
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var kTRContext = _context.Ingredients.Include(i => i.Recipe);

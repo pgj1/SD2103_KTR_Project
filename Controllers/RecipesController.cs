@@ -23,15 +23,17 @@ namespace KTR.Controllers
         private readonly KTRContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHostingEnvironment _webroot;
+        //private readonly IEnumerable<Recipes> _recipeList;
 
         public RecipesController(KTRContext context, UserManager<IdentityUser> userManager, IHostingEnvironment webroot)
         {
             _context = context;
             _userManager = userManager;
             _webroot = webroot;
+            //_recipeList = recipeList;
         }
 
-        // GET: Recipes
+        // GET: Recipes  Index()
 
         public async Task<IActionResult> Index()
         {
@@ -40,14 +42,21 @@ namespace KTR.Controllers
 
             //ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
             ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
-            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
+            //ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
+            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
             ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
             ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+            //ViewBag.UserId = new SelectList(_context.Users, "DisplayName");
 
-            return View(await _context.Recipes.ToListAsync());
+
+            //var kTRContext = _context.Ingredients.Include(i => i.Recipe);
+            //return View(await kTRContext.ToListAsync());
+
+            var KTRContext = _context.Recipes.Include(s => s.StatusName).Include(c => c.CatName).Include(m => m.MainName);
+            return View(await KTRContext.ToListAsync());
         }
 
-        // GET: Recipes/Details/5
+        // ************************* GET: Recipes/Details/5 *********************
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -74,7 +83,7 @@ namespace KTR.Controllers
             return View(recipes);
         }
 
-        // GET: Recipes/Create
+        //  ********************* GET: Recipes/Create ****************************
         // [Authorize]
         public IActionResult Create()
         {
@@ -240,50 +249,51 @@ namespace KTR.Controllers
 
 
         // Show Users their own recipes so they can edit them
-
+        [Authorize]
         public async Task<IActionResult> ShowRecipes()
         {
 
             string ShowId = _userManager.GetUserId(User);
-            Recipes profile = _context.Recipes.FirstOrDefault(id => id.RegId == ShowId);
+            Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
 
-            if (profile == null)
+            if (myRecipes == null)
             {
-                return RedirectToAction("Recipes", "Index");
+                //return RedirectToAction("Recipes", "Index");
+                return RedirectToAction("Recipes");
             }
 
-            View(await _context.Recipes.ToListAsync());
-            return View();
+            await _context.Recipes.ToListAsync();
+            return View(myRecipes);
         }
 
 
 
-        // Show Users their own ingredients so they can edit them
-
+        // Show Users ingredients for their recipes so they can edit them
+        [Authorize]
         public async Task<IActionResult> ShowIngredients()
         {
 
             string ShowId = _userManager.GetUserId(User);
-            Ingredients profile = _context.Ingredients.FirstOrDefault(id => id.IRegId == ShowId);
+            Ingredients profile = _context.Ingredients.FirstOrDefault(p => p.IRegId == ShowId);
 
             if (profile == null)
             {
                 return RedirectToAction("Recipes", "Index");
             }
 
-            View(await _context.Ingredients.ToListAsync());
-            return View();
+            return View(await _context.Ingredients.ToListAsync());
+            //return View(profile);
 
         }
 
 
-        // Show Users their own ingredients so they can edit them
-
+        // Show Users their own directions so they can edit them
+        [Authorize]
         public async Task<IActionResult> ShowPrep()
         {
 
             string ShowId = _userManager.GetUserId(User);
-            Preparation profile = _context.Preparation.FirstOrDefault(id => id.PRegId == ShowId);
+            Preparation profile = _context.Preparation.FirstOrDefault(p => p.PRegId == ShowId);
 
             if (profile == null)
             {
@@ -291,7 +301,7 @@ namespace KTR.Controllers
             }
 
             View(await _context.Preparation.ToListAsync());
-            return View();
+            return View(profile);
 
         }
 

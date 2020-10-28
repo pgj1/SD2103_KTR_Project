@@ -1,5 +1,8 @@
 ﻿@model KTR.Models.Ingredients
 @using System.Collections.Generic;
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Authorization;
+@inject UserManager<IdentityUser> userManager
 
 @{
     ViewData["Title"] = "Details";
@@ -37,11 +40,11 @@
             @Html.DisplayFor(model => model.Prep)
         </dd>
         @*<dt>
-            @Html.DisplayNameFor(model => model.LastUpdated)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdated)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.LastUpdated)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastUpdated)
+            </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.Recipe)
         </dt>

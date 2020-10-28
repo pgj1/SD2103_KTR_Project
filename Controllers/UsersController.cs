@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using KTR.Models;
 using KTR.ViewModels;
 
@@ -13,10 +15,13 @@ namespace KTR.Controllers
     public class UsersController : Controller
     {
         private readonly KTRContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public UsersController(KTRContext context)
+        public UsersController(KTRContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Users

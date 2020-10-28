@@ -14,13 +14,13 @@ namespace KTR
 
 		public static void SeedUsers(UserManager<IdentityUser> userManager)
 		{
-			IdentityUser admin = userManager.FindByEmailAsync("admin@KTR.com").Result;
+			IdentityUser admin = userManager.FindByEmailAsync("admin@ktr.com").Result;
 
 			if (admin == null)
 			{
 				IdentityUser sysadmin = new IdentityUser();
-				sysadmin.Email = "admin@KTR.com";
-				sysadmin.UserName = "admin@KTR.com";
+				sysadmin.Email = "admin@ktr.com";
+				sysadmin.UserName = "admin@ktr.com";
 
 				IdentityResult result = userManager.CreateAsync(sysadmin, "@Admin1").Result;
 
