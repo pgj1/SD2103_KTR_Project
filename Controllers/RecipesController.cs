@@ -23,13 +23,16 @@ namespace KTR.Controllers
         private readonly KTRContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHostingEnvironment _webroot;
-        //private readonly IEnumerable<Recipes> _recipeList;
+        
+        private readonly IEnumerable<Recipes> recipeEnum;
+
 
         public RecipesController(KTRContext context, UserManager<IdentityUser> userManager, IHostingEnvironment webroot)
         {
             _context = context;
             _userManager = userManager;
             _webroot = webroot;
+            
             //_recipeList = recipeList;
         }
 
@@ -248,23 +251,61 @@ namespace KTR.Controllers
         }
 
 
-        // Show Users their own recipes so they can edit them
+        // GET: Show Users their own recipes so they can edit them
+        //[Authorize]
+        //public async Task<IActionResult> ShowRecipes()
+        //{
+
+        //    string ShowId = _userManager.GetUserId(User);
+
+        //    if (ShowId == null)
+        //    {
+        //        //return RedirectToAction("Recipes", "Index");
+        //        return RedirectToAction("Recipes");
+        //    }
+
+        //    await _context.Recipes.ToListAsync();
+        //    Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
+
+        //    return View(myRecipes);
+
+        //    //return View(await _context.Recipes.ToListAsync());
+
+        //}
+
+        // -----TRYING ANother Way - ERROR: ENUM IS ALWAYS NULL --------------
+
         [Authorize]
         public async Task<IActionResult> ShowRecipes()
         {
 
             string ShowId = _userManager.GetUserId(User);
-            Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
+            IEnumerable<Recipes> recipeList = new List<Recipes>();
 
-            if (myRecipes == null)
+
+            if (ShowId == null)
             {
                 //return RedirectToAction("Recipes", "Index");
                 return RedirectToAction("Recipes");
             }
+            else
+                foreach (Recipes r in recipeEnum)
+                {
+                    if (ShowId == r.RegId) ;
+                    await _context.Recipes.ToListAsync();
+                }
 
-            await _context.Recipes.ToListAsync();
+            Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
             return View(myRecipes);
+
+
         }
+
+
+
+
+
+
 
 
 

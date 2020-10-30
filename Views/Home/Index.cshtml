@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 @*<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
@@ -52,15 +52,23 @@
         <span class="sr-only">Next</span>
     </a>
 </div>*@
-<img src="~/images/dishes.png">
-<h2>Welcome to Kitchen Table Recipes</h2>
+
+<h1>Welcome to Kitchen Table Recipes</h1>
+<div class="col-md-offset-1">
+    <img src="~/images/dishes.png" height="150">
+</div>
 <hr />
+
+<h3>Test Link: <a asp-controller="Recipes" asp-action="ShowRecipes">Show Recipes</a></h3>
+<p>- Should show list of recipes of logged in users only.</p>
+
 <div class="row">
     <div class="col-md-3">
         <h2>Application uses</h2>
         <ul>
             <li>Sample pages using ASP.NET Core MVC</li>
             <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
+            <li> </li>
         </ul>
     </div>
     <div class="col-md-3">

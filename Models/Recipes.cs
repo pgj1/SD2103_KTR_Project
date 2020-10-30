@@ -53,7 +53,8 @@ namespace KTR.Models
         public ICollection<Ingredients> Ingredients { get; set; }
 
         public ICollection<Preparation> Preparation { get; set; }
-        //public IEnumerable<Recipes> MyRecipes { get; set; }
+
+        public IEnumerable<Recipes> recipeEnum { get; set; }
        
     }
 }
