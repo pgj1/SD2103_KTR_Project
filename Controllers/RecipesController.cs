@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using System.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using KTR.Models;
 using KTR.ViewModels;
@@ -36,7 +37,7 @@ namespace KTR.Controllers
             //_recipeList = recipeList;
         }
 
-        // GET: Recipes  Index()
+        // **************************** GET: Recipes  Index()  *******************************
 
         public async Task<IActionResult> Index()
         {
@@ -280,8 +281,8 @@ namespace KTR.Controllers
         {
 
             string ShowId = _userManager.GetUserId(User);
-            IEnumerable<Recipes> recipeList = new List<Recipes>();
-
+            IEnumerable<Recipes> recipeEnum = new List<Recipes>();
+            recipeEnum = _context.Recipes;
 
             if (ShowId == null)
             {
@@ -289,15 +290,26 @@ namespace KTR.Controllers
                 return RedirectToAction("Recipes");
             }
             else
+            {
                 foreach (Recipes r in recipeEnum)
                 {
-                    if (ShowId == r.RegId) ;
-                    await _context.Recipes.ToListAsync();
+                    if (ShowId == r.RegId)
+                    {
+                        Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
+                        await _context.Recipes.ToListAsync();
+                        return View(myRecipes);
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
+                    
                 }
-
-            Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
-            return View(myRecipes);
-
+                return NotFound();
+            }
+           
+            //return View(myRecipes);
+            
 
         }
 
