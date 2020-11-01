@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,7 +26,7 @@ namespace KTR.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHostingEnvironment _webroot;
         
-        private readonly IEnumerable<Recipes> recipeEnum;
+       // private readonly IEnumerable<Recipes> recipeEnum;
 
 
         public RecipesController(KTRContext context, UserManager<IdentityUser> userManager, IHostingEnvironment webroot)
@@ -281,43 +282,43 @@ namespace KTR.Controllers
         {
 
             string ShowId = _userManager.GetUserId(User);
-            IEnumerable<Recipes> recipeEnum = new List<Recipes>();
-            recipeEnum = _context.Recipes;
+           // IEnumerable<Recipes> recipeEnum = new List<Recipes>();
+           // recipeEnum = _context.Recipes;
+            KTRContext context = new KTRContext();
+            // Recipes[] recipeLists =  _context.Recipes.ToArray();
 
-            if (ShowId == null)
-            {
-                //return RedirectToAction("Recipes", "Index");
-                return RedirectToAction("Recipes");
-            }
-            else
-            {
-                foreach (Recipes r in recipeEnum)
-                {
-                    if (ShowId == r.RegId)
-                    {
-                        Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
-                        await _context.Recipes.ToListAsync();
-                        return View(myRecipes);
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
-                    
-                }
-                return NotFound();
-            }
+              //ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
+              //ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
+              //ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+              //ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+
+
+            if (ShowId != null)
+           {
+             
+                var recipeList = (from r in context.Recipes
+                              where r.RegId == ShowId
+                             select r);
+            ViewBag.Data1 = recipeList;
+
+                ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
+                ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
+                ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+                ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+                return View();
+             }
+
+           return RedirectToAction("Home");
            
-            //return View(myRecipes);
-            
+
 
         }
 
+            
+            
+        
 
-
-
-
-
+       
 
 
 

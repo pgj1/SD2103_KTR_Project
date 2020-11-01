@@ -17,10 +17,10 @@ namespace KTR.Controllers
 {
     public class RegisterAccountController : Controller
     {
-        private UserManager<IdentityUser> _userManager;
-        private SignInManager<IdentityUser> _signInManager;
-        private KTRContext _context;
-        private readonly IHostingEnvironment _webroot;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly KTRContext _context;
+       
 
         public RegisterAccountController(KTRContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {

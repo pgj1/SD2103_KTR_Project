@@ -1,93 +1,98 @@
-﻿@model KTR.Models.Recipes
-@*@model IEnumerable<KTR.Models.Recipes>*@
-@inject IEnumerable<KTR.Models.Recipes> recipeEnum; 
-
-@using System.Collections.Generic;
-@using System.Linq.Expressions;
+﻿ @model KTR.Models.Recipes 
+@*@model IEnumerable<KTR.Models.Recipes>;*@
+@inject IEnumerable<KTR.Models.Recipes> match;
+@*@recipeEnum = _context.Recipes*@
 
 
-@{
-    ViewData["Title"] = "My Recipes";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    @using System.Collections.Generic;
+    @using System.Linq;
+    @using System.Text;
+    @using System.Threading;
 
-<h2>Recipes</h2>
 
-<p>
-    <a asp-controller="Recipes" asp-action="Create">Create New</a>
-</p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @* @Html.DisplayNameFor(model => model.RecipeName)*@ Recipe Name
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Servings)
-            </th>
-            @*
-                 <th>
-                    @Html.DisplayNameFor(model => model.LastUpdated)
-                </th>
-            *@
-            <th>
-                @*@Html.DisplayNameFor(model => model.CategoryId)*@ Food Category
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.MainId)*@ Main Ingredient
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.StatusId)*@ Visibility
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.UserId)*@ Submitter
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in recipeEnum)
+    @{
+        ViewData["Title"] = "My Recipes";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-        {
+    <h2>My Recipes</h2>
+
+    <p>
+        <a asp-controller="Recipes" asp-action="Create">Create New</a>
+    </p>
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecipeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Servings)
-                </td>
-                @*           <td>
-                        @Html.DisplayFor(modelItem => item.LastUpdated)
-                    </td>
+                <th>
+                    @* @Html.DisplayNameFor(model => model.RecipeName)*@ Recipe Name
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Servings)
+                </th>
+                @*
+                     <th>
+                        @Html.DisplayNameFor(model => model.LastUpdated)
+                    </th>
                 *@
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryId)
-                    @*@Html.DisplayFor(modelItem => item.RecipeCategory.CatName)*@
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MainId)
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.StatusId)*@
-                    @Html.DisplayFor(modelItem => item.StatusId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    | <a asp-action="Details" asp-route-id="RecipeId">Details</a> |
-                    <a asp-action="Edit" asp-route-id="RecipeId">Edit</a> |
-                    @*<a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>*@
-                </td>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.CategoryId)*@ Food Category
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.MainId)*@ Main Ingredient
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.StatusId)*@ Visibility
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.UserId)*@ User Id
+                </th>
+                <th>Actions</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.Data1 as IEnumerable<KTR.Models.Recipes>)
 
-        }
-    </tbody>
-</table>
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecipeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Servings)
+                    </td>
+                    @*           <td>
+                            @Html.DisplayFor(modelItem => item.LastUpdated)
+                        </td>
+                    *@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CatName)
+                        @*@Html.DisplayFor(modelItem => item.RecipeCategory.CatName)*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MainName)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.StatusId)*@
+                        @Html.DisplayFor(modelItem => item.StatusName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        | <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
+                        <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>

@@ -34,7 +34,7 @@ namespace KTR.Models
         public int? MainId { get; set; }
 
         public string Description { get; set; }
-
+             
         public string PhotoPath { get; set; }
 
         [Required]
