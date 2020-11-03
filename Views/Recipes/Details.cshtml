@@ -1,5 +1,5 @@
 ﻿@model KTR.Models.Recipes
-@{IEnumerable<RecipeCategory> recipeCategory; }
+
 
 @{
     ViewData["Title"] = "Details";
@@ -79,7 +79,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit</a> |
-    <a asp-action="ShowIngredients" asp-route-id="@Model.RecipeId">View/Edit Ingredient List</a> |
+    <a asp-controller="Ingredients" asp-action="ShowIngredients" asp-route-id="@Model.RecipeId">View Ingredient List</a> |
     <a asp-action="ShowRecipes">Back to My Recipe List</a>
 </div>
  

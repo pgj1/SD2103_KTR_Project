@@ -1,59 +1,87 @@
 ﻿@model KTR.Models.Ingredients
-@using System.Collections.Generic;
+
 @using Microsoft.AspNetCore.Identity;
 @using Microsoft.AspNetCore.Authorization;
 @inject UserManager<IdentityUser> userManager
+@inject IEnumerable<KTR.Models.Recipes> match;
+@inject IEnumerable<KTR.Models.Ingredients> match;
+
+
+
+@using System.Collections.Generic;
+@using System.Linq;
+@using System.Text;
+@using System.Threading;
+
+
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Ingredients";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Ingredient List for @Html.DisplayFor(model => model.Recipe)</h2>
+<h2>Ingredient List for @ViewBag.RecipeName</h2>
+
+<p>
+    <a asp-controller="Ingredients" asp-action="Create">Add New Ingredients</a>
+</p>
+
 
 <div>
     @*<h4>Ingredients</h4*@>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Amt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Amt)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Unit)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Unit)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Item)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Item)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Prep)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Prep)
-        </dd>
-        @*<dt>
-                @Html.DisplayNameFor(model => model.LastUpdated)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.LastUpdated)
-            </dd>*@
-        <dt>
-            @Html.DisplayNameFor(model => model.Recipe)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Recipe)
-        </dd>
-    </dl>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Unit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Item)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Prep)
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.IngredientList as IEnumerable<KTR.Models.Ingredients>)
+
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amt)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Unit)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Item)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Prep)
+                    </td>
+
+                    <td>
+                        @*<a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |*@
+                        <a asp-action="Edit" asp-route-id="@item.IngredientId">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IngredientId">Delete</a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IngredientId">Edit</a> |
-    <a asp-action="Details">Back to Description</a>
+   <a asp-action="Details/@Model.RecipeId">Back to Description</a>
 </div>

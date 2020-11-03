@@ -7,6 +7,7 @@ namespace KTR.Models
 {
     public partial class Ingredients
     {
+        [Key]
         public int IngredientId { get; set; }
         
         [Required]
@@ -14,12 +15,17 @@ namespace KTR.Models
         
         [Required]
         public string Unit { get; set; }
+        
+        [Required]
         public string Item { get; set; }
+
         public string Prep { get; set; }
 
         [Required]
         public int RecipeId { get; set; }
+       
         public DateTime LastUpdated { get; set; }
+        
         public string IRegId { get; set; }
 
         public AspNetUsers IReg { get; set; }

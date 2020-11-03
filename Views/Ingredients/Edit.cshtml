@@ -1,19 +1,28 @@
 ﻿@model KTR.Models.Ingredients
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> userManager
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Edit Ingredient</h2>
 
-<h4>Ingredients</h4>
+@*<h4>Ingredients</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IngredientId" />
+
+            <div class="form-group">
+                <label asp-for="RecipeId" class="control-label">Recipe Name</label>
+                <select readonly="readonly" asp-for="RecipeId" class="form-control" asp-items="ViewBag.RecipeId"></select>
+                <span asp-validation-for="RecipeId" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Amt" class="control-label"></label>
                 <input asp-for="Amt" class="form-control" />
@@ -34,26 +43,27 @@
                 <input asp-for="Prep" class="form-control" />
                 <span asp-validation-for="Prep" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="RecipeId" class="control-label"></label>
-                <select asp-for="RecipeId" class="form-control" asp-items="ViewBag.RecipeId"></select>
-                <span asp-validation-for="RecipeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastUpdated" class="control-label"></label>
-                <input asp-for="LastUpdated" class="form-control" />
+                <label asp-for="LastUpdated" class="control-label">Date</label>
+                <input readonly="readonly" asp-for="LastUpdated" class="form-control" />
                 <span asp-validation-for="LastUpdated" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <label asp-for="IRegId" class="control-label"> </label>
+                <input readonly="readonly" asp-for="IRegId" class="form-control" value="@userManager.GetUserId(User)" />
+                <span asp-validation-for="IRegId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-info" />
+                @*<input type="button" asp-action="Index"  value="Cancel" class="btn btn-danger"/>*@
+                <a asp-action="Index" class="btn btn-danger">Cancel</a>
+
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

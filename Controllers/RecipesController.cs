@@ -38,7 +38,10 @@ namespace KTR.Controllers
             //_recipeList = recipeList;
         }
 
-        // **************************** GET: Recipes  Index()  *******************************
+
+        // *********************************************************************************************************
+        //                                           GET: Recipes  Index() 
+        // *********************************************************************************************************
 
         public async Task<IActionResult> Index()
         {
@@ -61,9 +64,9 @@ namespace KTR.Controllers
             return View(await KTRContext.ToListAsync());
         }
 
-
-        //////////////////////////////  For Administrators //////////////////////////////////////////////
-        // **************************** GET: Recipes  AdminIndex()  *******************************
+        // *********************************************************************************************************
+        //                          GET: Recipes  AdminIndex()  - FOR ADMINISTRATORS
+        // *********************************************************************************************************
 
         [Authorize(Roles="Administrator")]
 
@@ -87,8 +90,10 @@ namespace KTR.Controllers
 
 
 
+        // *********************************************************************************************************
+        //                                        GET: Recipes/Details/5 
+        // *********************************************************************************************************
 
-        // ************************* GET: Recipes/Details/5 *********************
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -115,8 +120,11 @@ namespace KTR.Controllers
             return View(recipes);
         }
 
-        //  ********************* GET: Recipes/Create ****************************
-        // [Authorize]
+        // *********************************************************************************************************
+        //                                       GET: Recipes/Create 
+        // *********************************************************************************************************
+
+        [Authorize]
         public IActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
@@ -127,9 +135,12 @@ namespace KTR.Controllers
             return View();
         }
 
-        // POST: Recipes/Create
+        // *********************************************************************************************************
+        //                                          POST: Recipes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // *********************************************************************************************************
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,RegId")] Recipes recipes, IFormFile FilePhoto)
@@ -164,10 +175,11 @@ namespace KTR.Controllers
         }
 
 
-        // ************************ EDIT RECIPE ********************************************************************
+        
+        // *********************************************************************************************************
+        //                                          GET: Recipes/Edit/5
         // *********************************************************************************************************
 
-        // GET: Recipes/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -192,13 +204,12 @@ namespace KTR.Controllers
             return View(recipes);
         }
 
-// ************************ EDIT RECIPE ********************************************************************
-// *********************************************************************************************************
-
-
-        // POST: Recipes/Edit/5
+        
+        // *********************************************************************************************************
+        //                                                  POST: Recipes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // *********************************************************************************************************
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -230,29 +241,29 @@ namespace KTR.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //   {
+            if (ModelState.IsValid)
+            {
+                try
+               {
                     _context.Update(recipes);
                     await _context.SaveChangesAsync();
-            //   }
-            //    catch (DbUpdateConcurrencyException)
-            //   {
-            //        if (!RecipesExists(recipes.RecipeId))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
+               }
+                catch (DbUpdateConcurrencyException)
+               {
+                   if (!RecipesExists(recipes.RecipeId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
 
             // return View(recipes);
-            return RedirectToAction(nameof(ShowRecipes));
+               return RedirectToAction(nameof(ShowRecipes));
         }
 
          
@@ -303,7 +314,7 @@ namespace KTR.Controllers
 
 
    // *************************************************************************************************
-   // **************************************** SHOW RECIPES *******************************************
+   //                                            SHOW RECIPES 
    // *************************************************************************************************
 
         [Authorize]

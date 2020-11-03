@@ -16,8 +16,7 @@
 		recipe from your co-worker? Kitchen Table Recipes is a Windows-based online recipe 
 		box to keep track of those jewels. KTR lets you type in your recipe and then call 
 		it up later to edit, view or print. You can safely upload grandma’s secret recipe 
-		since private recipes are only accessible by the recipe owner. Your recipes are 
-		only accessible by others if you designate the recipe as shared.  <br>
+		since private recipes are only accessible by the recipe owner.   <br>
 		The app will incorporate the following: <br>
 		TECH STACK <br>
 		   - C# <br>
@@ -29,17 +28,16 @@
 		 FEATURES <br>
 		  - Visitors can view a list of recipe names and short descriptions <br>
 		  - Only registered users may upload recipes <br>
-		  - Registered users can view shared recipes details <br>
-		  - Registered users determine visibility of their recipes (shared vs private) <br>
 		  - Registered users can view, edit and delete their own recipes <br>
-		  - Web App Administrator will have complete control over all recipe <br>
+		  - Web App Administrator will have complete control over all recipes <br>
 		PAGES <br>
-                  - Welcome/Home <br>
-                  - Login <br>
-		  - Manage Account <br>
+          - Welcome/Home <br>
+          - Login <br>
+		  - Create Profile <br>
 		  - Browse Recipe List <br>
-		  - Manage Recipes (Upload/Create, Edit, Delete Pages) <br>
-		  - Contact <br>  
+		  - Manage Recipe (Upload/Create, Edit, Delete) <br>
+		  - Manage Ingredients (Upload/Create, Edit, Delete) <br>
+		  - Manage Procedures (Upload/Create, Edit, Delete) <br>  
 		 <br>
      </p>
   </body>

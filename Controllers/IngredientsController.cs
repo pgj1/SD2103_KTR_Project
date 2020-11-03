@@ -129,7 +129,9 @@ namespace KTR.Controllers
             {
                 return NotFound();
             }
+
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", ingredients.RecipeId);
+            
             return View(ingredients);
         }
 
@@ -212,26 +214,46 @@ namespace KTR.Controllers
             return _context.Ingredients.Any(e => e.IngredientId == id);
         }
         // *********************************************************************************************************
+        //                                          ShowIngredients()
         //                          Show Users their own ingredients so they can edit them
         // *********************************************************************************************************
 
-        public async Task<IActionResult> ShowIngredients()
+        public async Task<IActionResult> ShowIngredients(int id)
         {
-
+            KTRContext context = new KTRContext();
             string ShowId = _userManager.GetUserId(User);
-            Ingredients profile = _context.Ingredients.FirstOrDefault(id => id.IRegId == ShowId);
+            var RList = _context.Recipes;
+            var IList = _context.Ingredients;
 
-            if (profile == null)
+            if (id != 0)
             {
-                return RedirectToAction("Recipes", "Index");
+
+                var recipeList = (from r in context.Recipes
+                                  where r.RecipeId == id
+                                  select r.RecipeName);
+                ViewBag.RecipeName = recipeList;
+
+                Ingredients profile = await _context.Ingredients.FindAsync(id);
+
+                if (profile != null)
+                {
+                    var MyIList = (from i in context.Ingredients
+                                   where i.RecipeId == id
+                                   select i);
+                    ViewBag.IngredientList = MyIList;
+
+                    return View(MyIList);
+                }
+                else
+                {
+                    return RedirectToAction("Recipes", "ShowRecipes");
+                }
+
             }
-
-            View(await _context.Ingredients.ToListAsync());
-            return View();
-
+            return RedirectToAction("Recipes", "ShowRecipes");
         }
 
 
-
+        
     }
 }

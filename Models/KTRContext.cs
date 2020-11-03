@@ -93,6 +93,11 @@ namespace KTR.Models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
+                // Added because RecipeId not in context
+                entity.Property(e => e.RecipeId)
+                   .IsRequired();
+
+
                 entity.HasOne(d => d.IReg)
                     .WithMany(p => p.Ingredients)
                     .HasForeignKey(d => d.IRegId)

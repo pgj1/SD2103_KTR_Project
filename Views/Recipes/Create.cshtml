@@ -76,7 +76,8 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-info" />
+                <a asp-action="ShowRecipes" class="btn btn-danger">Cancel</a>
 
 
             </div>
@@ -85,7 +86,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Return to list</a>
+   @* <a asp-action="ShowRecipes" class="btn btn-danger">Cancel</a> *@
 
     @*<input type="button" value="GO BACK" class="btn btn-default"
            onclick="location.href='%Request.UrlReferrer'" />*@
