@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -11,30 +13,39 @@ namespace KTR.Models
         {
             Ingredients = new HashSet<Ingredients>();
             Preparation = new HashSet<Preparation>();
-            
-            
         }
         
+
         public int RecipeId { get; set; }
 
        [Required]
+       [DisplayName ("Recipe Name")]
         public string RecipeName { get; set; }
 
+        [Required]
+        [DisplayName ("User Id")]
         public int UserId { get; set; }
 
+        [Required]
         public int Servings { get; set; }
 
+        [Required]
+        [DisplayName ("Food Category")]
         public int CategoryId { get; set; }
 
         [Required]
+        [DisplayName ("Visibility")]
         public int StatusId { get; set; }
 
+        [Required]
         public DateTime LastUpdated { get; set; }
 
+        [DisplayName ("Main Ingredient")]
         public int? MainId { get; set; }
 
         public string Description { get; set; }
              
+        [DisplayName ("Image")]
         public string PhotoPath { get; set; }
 
         [Required]
@@ -48,7 +59,7 @@ namespace KTR.Models
 
         public Users User { get; set; }
 
-        //public  Users DisplayName { get; set; }
+       // public Users DisplayName { get; set; }
 
         public ICollection<Ingredients> Ingredients { get; set; }
 

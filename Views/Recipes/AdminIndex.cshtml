@@ -10,15 +10,11 @@
 }
 
 
-<h2>Kitchen Table Recipes</h2>
+<h2>Recipes</h2>
 
 <p>
-    <a asp-controller="RegisterAccount" asp-action="CreateUser">Register Now</a>
+    <a asp-controller="Recipes" asp-action="Create">Create New</a>
 </p>
-<div class="cols-md-12">
-    <h3>Only registered users can view recipe details. <br />
-    Become a member today to upload and view shared recipes. </h3>
-</div>
 <table class="table">
     <thead>
         <tr>
@@ -31,11 +27,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.Servings)
             </th>
-            @*
+            
                  <th>
                     @Html.DisplayNameFor(model => model.LastUpdated)
                 </th>
-            *@
+            
             <th>
                 @*@Html.DisplayNameFor(model => model.CategoryId)*@ Food Category
             </th>
@@ -45,12 +41,10 @@
             <th>
                 @*@Html.DisplayNameFor(model => model.StatusId)*@ Visibility
             </th>
-
-            <!--<th>-->
-                @*@Html.DisplayNameFor(model => model.UserId)*@ <!--UserId
+            <th>
+                @*@Html.DisplayNameFor(model => model.UserId)*@ UserId
             </th>
-            <th>Actions</th>-->
-
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -67,14 +61,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Servings)
                 </td>
-                @*           <td>
+                <td>
                         @Html.DisplayFor(modelItem => item.LastUpdated)
-                    </td>
-                *@
+                </td>
+               
             <td>
                 @Html.DisplayFor(modelItem => item.CatName.CatName)
-                @*@Html.DisplayFor(modelItem => item.RecipeCategory.CatName)*@
-            </td>
+             </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.MainName.MainName)
                 </td>
@@ -82,17 +76,15 @@
                     @*@Html.DisplayFor(modelItem => item.StatusId)*@
                     @Html.DisplayFor(modelItem => item.StatusName.StatusName)
                 </td>
-               
-                <!--<td>-->
+                <td>
                     @*@Html.DisplayFor(modelItem => item.UserId)*@
-                    <!--@Html.DisplayFor(modelItem => item.UserId)
+                    @Html.DisplayFor(modelItem => item.UserId)
                 </td>
                 <td>
                     | <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |-->
-                    @*<a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>*@
-                <!--</td>-->
-
+                    <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>
+                </td>
             </tr>
 
         }

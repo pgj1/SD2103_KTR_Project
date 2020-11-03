@@ -8,12 +8,13 @@
 
 <h2> @Html.DisplayFor(model => model.RecipeName)</h2>
 
+<hr />
 <div>
-    <h4>Details</h4>
-    <hr />
+    <h4>Recipe Details</h4>
+    
     <dl class="dl-horizontal">
         <dt>
-            Recipe Name
+            @Html.DisplayNameFor(model => model.RecipeName)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.RecipeName)
@@ -55,7 +56,7 @@
         </dd>
 
         <dt>
-            Viewing Status
+             @Html.DisplayNameFor(model => model.StatusId) 
         </dt>
         <dd>
             @Html.DisplayFor(model => model.StatusId)
@@ -67,16 +68,18 @@
             @Html.DisplayFor(model => model.DisplayName)
         </dd>*@
          
-        <dt>
-            Image
-        </dt>
+    <dt>
+          @Html.DisplayNameFor(model => model.PhotoPath)   
+    </dt>
         <dd>
-           <img src="/FoodPhotos/@Html.DisplayFor(model => model.PhotoPath)" />
+           <img src="/FoodPhotos/@Html.DisplayFor(model => model.PhotoPath)" width="75" heigth="75"/>
         </dd>
 
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit</a> |
-    <a asp-action="Index">Back to Recipe List</a>
+    <a asp-action="ShowIngredients" asp-route-id="@Model.RecipeId">View/Edit Ingredient List</a> |
+    <a asp-action="ShowRecipes">Back to My Recipe List</a>
 </div>
+ 

@@ -40,7 +40,7 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label">Food Category</label>
+                <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
@@ -52,7 +52,7 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="MainId" class="control-label">Primaary Ingredient</label>
+                <label asp-for="MainId" class="control-label"></label>
                 <select asp-for="MainId" class="form-control" asp-items="ViewBag.MainId"> </select>
                 <span asp-validation-for="MainId" class="text-danger"></span>
             </div>
@@ -71,7 +71,7 @@
             </div>
 
             <div class="form-group">
-                <label for="FilePhoto">*Recipe Photo</label>
+                <label for="Photo">*Recipe Photo</label>
                 <input id="FilePhoto" type="file" name="FilePhoto" />
             </div>
 
@@ -86,6 +86,12 @@
 
 <div>
     <a asp-action="Index">Return to list</a>
+
+    @*<input type="button" value="GO BACK" class="btn btn-default"
+           onclick="location.href='%Request.UrlReferrer'" />*@
+
+   
+
 </div>
 
 @section Scripts {

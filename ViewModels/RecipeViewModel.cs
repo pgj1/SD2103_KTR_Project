@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KTR.ViewModels;
 using KTR.Models;
- 
+using System.ComponentModel;
+
+
 
 namespace KTR.ViewModels
 {
@@ -28,11 +30,11 @@ namespace KTR.ViewModels
         public Recipes Servings { get; set; }
 
         [Required]
-        [Display(Name = "Category")]
+        [Display(Name = "Food Category")]
         public RecipeCategory CategoryId { get; set; }
 
 
-        public RecipeCategory catName  { get; set; }
+        public RecipeCategory CatName  { get; set; }
 
 
         public Ingredients Amt { get; set; }
@@ -49,11 +51,11 @@ namespace KTR.ViewModels
         public Ingredients IRegId { get; set; }
 
 
-        public IEnumerable<SelectListItem> CatName { get; set; }
+       // public IEnumerable<SelectListItem> CatName { get; set; }
 
 
         [Required]
-        [Display(Name = "Status")]
+        [Display(Name = "Visibility")]
         public RecipeStatus StatusId { get; set; }
 
         public IEnumerable<SelectListItem> StatusName { get; set; }
@@ -73,9 +75,9 @@ namespace KTR.ViewModels
         [Required]
         public Recipes RegId { get; set; }
 
-        [Required]
-        [Display(Name = "Submitted By")]
-        public Users User { get; set; }
+       // [Required]
+      //  [Display(Name = "Submitted By")]
+       // public Users User { get; set; }
         public IEnumerable<SelectListItem> DisplayName;
 
                       
@@ -83,7 +85,7 @@ namespace KTR.ViewModels
         public IEnumerable<MainIngredient> mainIngredient;
         public IEnumerable<RecipeStatus> recipeStatus;
         public IEnumerable<Users> displayName;
-        public IEnumerable<Recipes> Recipe_Id;
+        //public IEnumerable<Recipes> Recipe_Id;
 
         public IEnumerator<Recipes> model;
 

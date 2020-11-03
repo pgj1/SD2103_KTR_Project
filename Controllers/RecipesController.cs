@@ -25,8 +25,7 @@ namespace KTR.Controllers
         private readonly KTRContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHostingEnvironment _webroot;
-        
-       // private readonly IEnumerable<Recipes> recipeEnum;
+        private readonly IEnumerable<Users> _usersEnum;
 
 
         public RecipesController(KTRContext context, UserManager<IdentityUser> userManager, IHostingEnvironment webroot)
@@ -34,6 +33,7 @@ namespace KTR.Controllers
             _context = context;
             _userManager = userManager;
             _webroot = webroot;
+            _usersEnum = _context.Users;
             
             //_recipeList = recipeList;
         }
@@ -60,6 +60,33 @@ namespace KTR.Controllers
             var KTRContext = _context.Recipes.Include(s => s.StatusName).Include(c => c.CatName).Include(m => m.MainName);
             return View(await KTRContext.ToListAsync());
         }
+
+
+        //////////////////////////////  For Administrators //////////////////////////////////////////////
+        // **************************** GET: Recipes  AdminIndex()  *******************************
+
+        [Authorize(Roles="Administrator")]
+
+        public async Task<IActionResult> AdminIndex()
+        {
+          //ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
+            ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
+            //ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
+            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
+            ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+            ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+            //ViewBag.UserId = new SelectList(_context.Users, "DisplayName");
+
+
+            var KTRContext = _context.Recipes.Include(s => s.StatusName).Include(c => c.CatName).Include(m => m.MainName);
+            return View(await KTRContext.ToListAsync());
+        }
+
+
+
+
+
+
 
         // ************************* GET: Recipes/Details/5 *********************
         public async Task<IActionResult> Details(int? id)
@@ -105,10 +132,10 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,PhotoPath,RegId")] Recipes recipes, IFormFile FilePhoto)
+        public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,RegId")] Recipes recipes, IFormFile FilePhoto)
         {
 
-            if (FilePhoto.FileName is null)
+            if (FilePhoto.Length > 0 )
             {
 
                 string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\";
@@ -136,9 +163,15 @@ namespace KTR.Controllers
             return View(recipes);
         }
 
+
+        // ************************ EDIT RECIPE ********************************************************************
+        // *********************************************************************************************************
+
         // GET: Recipes/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -149,25 +182,36 @@ namespace KTR.Controllers
             {
                 return NotFound();
             }
+
             ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
             ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
             ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "Email", "UserId", recipes.UserId);
+
+
             return View(recipes);
         }
+
+// ************************ EDIT RECIPE ********************************************************************
+// *********************************************************************************************************
+
 
         // POST: Recipes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,RecipeName,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,Description,PhotoPath,RegId")] Recipes recipes, IFormFile FilePhoto)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,RecipeName,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,Description,RegId")] Recipes recipes, 
+            IFormFile FilePhoto)
         {
-            if (id != recipes.RecipeId)
-            {
-                return NotFound();
-            }
+            ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
+            ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
+            ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "DisplayName", recipes.UserId);
 
+            int RecipeId = id;
+ 
             if (FilePhoto.Length > 0)
             {
 
@@ -181,32 +225,37 @@ namespace KTR.Controllers
                 }
             }
 
-            if (ModelState.IsValid)
+            if (id != recipes.RecipeId)
             {
-                try
-                {
+                return NotFound();
+            }
+
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //   {
                     _context.Update(recipes);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RecipesExists(recipes.RecipeId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
-            ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
-            ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Email", "UserId", recipes.UserId);
-            return View(recipes);
+            //   }
+            //    catch (DbUpdateConcurrencyException)
+            //   {
+            //        if (!RecipesExists(recipes.RecipeId))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            // return View(recipes);
+            return RedirectToAction(nameof(ShowRecipes));
         }
+
+         
 
         // GET: Recipes/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -253,33 +302,20 @@ namespace KTR.Controllers
         }
 
 
-        // GET: Show Users their own recipes so they can edit them
-        //[Authorize]
-        //public async Task<IActionResult> ShowRecipes()
-        //{
-
-        //    string ShowId = _userManager.GetUserId(User);
-
-        //    if (ShowId == null)
-        //    {
-        //        //return RedirectToAction("Recipes", "Index");
-        //        return RedirectToAction("Recipes");
-        //    }
-
-        //    await _context.Recipes.ToListAsync();
-        //    Recipes myRecipes = _context.Recipes.FirstOrDefault(p => p.RegId == ShowId);
-
-        //    return View(myRecipes);
-
-        //    //return View(await _context.Recipes.ToListAsync());
-
-        //}
-
-        // -----TRYING ANother Way - ERROR: ENUM IS ALWAYS NULL --------------
+   // *************************************************************************************************
+   // **************************************** SHOW RECIPES *******************************************
+   // *************************************************************************************************
 
         [Authorize]
         public async Task<IActionResult> ShowRecipes()
         {
+            //ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
+            ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
+            //ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
+            ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
+            ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+            ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+            //ViewBag.UserId = new SelectList(_context.Users, "DisplayName");
 
             string ShowId = _userManager.GetUserId(User);
            // IEnumerable<Recipes> recipeEnum = new List<Recipes>();
@@ -287,10 +323,7 @@ namespace KTR.Controllers
             KTRContext context = new KTRContext();
             // Recipes[] recipeLists =  _context.Recipes.ToArray();
 
-              //ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
-              //ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
-              //ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
-              //ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+
 
 
             if (ShowId != null)
@@ -301,10 +334,16 @@ namespace KTR.Controllers
                              select r);
             ViewBag.Data1 = recipeList;
 
-                ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
-                ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
-                ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
-                ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+                //ViewBag.EditCatName = (_context.RecipeCategory, "CategoryId", "CatName");
+                //ViewBag.EditMainName = new SelectList(_context.MainIngredient, "MainName");
+                //ViewBag.EditStatName = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+                //ViewBag.EditUserName = new SelectList(_context.Users, "UserId", "DisplayName");
+
+                ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
+                ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName");
+                ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
+                ViewData["UserId"] = new SelectList(_context.Users, "UserId", "DisplayName");
+
                 return View();
              }
 

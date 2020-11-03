@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,14 +23,19 @@ namespace KTR.Controllers
     {
         private readonly KTRContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IHostingEnvironment _webroot;
 
         public IngredientsController(KTRContext context, UserManager<IdentityUser> userManager, IHostingEnvironment webroot)
         {
             _context = context;
             _userManager = userManager;
+            _webroot = webroot;
         }
 
-        // GET: Ingredients Index()
+
+        // *********************************************************************************************************
+        //                                         GET: Ingredients Index()
+        // *********************************************************************************************************
         [Authorize]
         public async Task<IActionResult> Index()
         {
@@ -36,8 +43,9 @@ namespace KTR.Controllers
             return View(await kTRContext.ToListAsync());
         }
 
-
-        // GET: Ingredients/Show/5
+        // *********************************************************************************************************
+        //                                          GET: Ingredients/Show/5
+        // *********************************************************************************************************
         public async Task<IActionResult> Show(int? id)
         {
             if (id == null)
@@ -56,8 +64,10 @@ namespace KTR.Controllers
             return View("IngredientsController","ShowIngredients");
         }
 
+        // *********************************************************************************************************
+        //                                          GET: Ingredients/Details/5
+        // *********************************************************************************************************
 
-        // GET: Ingredients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -76,7 +86,10 @@ namespace KTR.Controllers
             return View(ingredients);
         }
 
-        // GET: Ingredients/Create
+        // *********************************************************************************************************
+        //                                              GET: Ingredients/Create
+        // *********************************************************************************************************
+
         public IActionResult Create()
         {
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName");
@@ -100,7 +113,10 @@ namespace KTR.Controllers
             return View(ingredients);
         }
 
-        // GET: Ingredients/Edit/5
+        // *********************************************************************************************************
+        //                                          GET: Ingredients/Edit/5
+        // *********************************************************************************************************
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,7 +133,9 @@ namespace KTR.Controllers
             return View(ingredients);
         }
 
-        // POST: Ingredients/Edit/5
+        // *********************************************************************************************************
+                                                       // POST: Ingredients/Edit/5
+        // *********************************************************************************************************
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -153,7 +171,10 @@ namespace KTR.Controllers
             return View(ingredients);
         }
 
-        // GET: Ingredients/Delete/5
+        // *********************************************************************************************************
+        //                                          GET: Ingredients/Delete/5
+        // *********************************************************************************************************
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -172,7 +193,10 @@ namespace KTR.Controllers
             return View(ingredients);
         }
 
-        // POST: Ingredients/Delete/5
+        // *********************************************************************************************************
+        //                                              POST: Ingredients/Delete/5
+        // *********************************************************************************************************
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -187,8 +211,9 @@ namespace KTR.Controllers
         {
             return _context.Ingredients.Any(e => e.IngredientId == id);
         }
-
-        // Show Users their own ingredients so they can edit them
+        // *********************************************************************************************************
+        //                          Show Users their own ingredients so they can edit them
+        // *********************************************************************************************************
 
         public async Task<IActionResult> ShowIngredients()
         {
