@@ -10,14 +10,18 @@
 }
 
 
-<h2>Kitchen Table Recipes</h2>
+    <div class="flextop">
+    <h2>Recipes</h2>
+    </div>
 
-<p>
-    <a asp-controller="RegisterAccount" asp-action="CreateUser">Register Now</a>
-</p>
-<div class="cols-md-12">
-    <h3>Only registered users can view recipe details. <br />
-    Become a member today to upload and view shared recipes. </h3>
+<div class="col-lg-12">
+    <h4>
+        Only registered users can view recipe details. <br />
+        Become a member today to upload and view your recipes.
+    </h4>
+    <h4>
+        <a asp-controller="RegisterAccount" asp-action="CreateUser">Register Now</a>
+    </h4>
 </div>
 <table class="table">
     <thead>
@@ -42,9 +46,9 @@
             <th>
                 @*@Html.DisplayNameFor(model => model.MainId)*@ Main Ingredient
             </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.StatusId)*@ Visibility
-            </th>
+            <!--<th>-->
+                @*@Html.DisplayNameFor(model => model.StatusId)*@ <!--Visibility
+            </th>-->
 
             <!--<th>-->
                 @*@Html.DisplayNameFor(model => model.UserId)*@ <!--UserId
@@ -78,10 +82,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.MainName.MainName)
                 </td>
-                <td>
+                <!--<td>-->
                     @*@Html.DisplayFor(modelItem => item.StatusId)*@
-                    @Html.DisplayFor(modelItem => item.StatusName.StatusName)
-                </td>
+                    <!--@Html.DisplayFor(modelItem => item.StatusName.StatusName)
+                </td>-->
                
                 <!--<td>-->
                     @*@Html.DisplayFor(modelItem => item.UserId)*@
@@ -99,4 +103,4 @@
     </tbody>
 </table>
 
-<a asp-controller= "Recipes" asp-action="ShowRecipes">Show My Recipes</a>
+    

@@ -16,7 +16,7 @@
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
 
-    <h2>My Recipes</h2>
+    <h2 class="flextop">My Recipes</h2>
 
     <p>
         <a asp-controller="Recipes" asp-action="Create">Create New</a>
@@ -45,9 +45,9 @@
                 <th>
                     @*@Html.DisplayNameFor(model => model.MainId)*@ Main Ingredient
                 </th>
-                <th>
-                    @*@Html.DisplayNameFor(model => model.StatusId)*@ Visibility
-                </th>
+                <!--<th>-->
+                    @*@Html.DisplayNameFor(model => model.StatusId)*@ <!--Visibility
+                </th>-->
                 <th>
                     @*@Html.DisplayNameFor(model => model.UserId)*@ User Id
                 </th>
@@ -74,14 +74,16 @@
                     *@
                     <td>
                         @Html.DisplayFor(modelItem => item.CategoryId)
+                        
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.MainName.MainName)
+                        @Html.DisplayFor(modelItem => item.MainId)
+                       
                     </td>
-                    <td>
+                    <!--<td>-->
                         @*@Html.DisplayFor(modelItem => item.StatusId)*@
-                        @Html.DisplayFor(modelItem => item.StatusName.StatusName)
-                    </td>
+                        <!--@Html.DisplayFor(modelItem => item.StatusName.StatusName)
+                    </td>-->
                     <td>
                         @Html.DisplayFor(modelItem => item.UserId)
                     </td>

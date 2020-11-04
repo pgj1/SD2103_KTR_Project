@@ -28,14 +28,50 @@ namespace KTR.Controllers
 
         }
 
-        // GET: Preparation Index()
+        // **********************************************************************************
+        //                            GET: Preparation Index()
+        //                                  For Admin
+        // **********************************************************************************
 
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int id)
         {
             var kTRContext = _context.Preparation.Include(p => p.Recipe);
             return View(await kTRContext.ToListAsync());
         }
+
+
+        // **********************************************************************************
+        //                      GET: Preparation MyPrep()
+        //                              For users
+        // **********************************************************************************
+
+        [Authorize]
+        public async Task<IActionResult> MyPrep(int id)
+        {
+            string ShowId = _userManager.GetUserId(User);
+            var kTRContext = _context.Preparation.Include(p => p.Recipe);
+
+
+            if (ShowId != null)
+            {
+
+                var PrepList = (from p in _context.Preparation
+                                  where p.RecipeId == id
+                                  orderby p.Step
+                                  select p);
+                ViewBag.PrepList = PrepList;
+
+                return View(await PrepList.ToListAsync());
+
+            }
+
+            return RedirectToAction("Home");
+        }
+
+
+       
+
 
         // GET: Preparation/Details/5
         public async Task<IActionResult> Details(int? id)

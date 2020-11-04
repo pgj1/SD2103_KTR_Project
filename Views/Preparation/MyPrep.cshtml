@@ -8,7 +8,7 @@
 <h2 class="flextop">Preparation</h2>
 
 <p>
-    <a asp-action="Create">Add Additional Steps</a>
+    <a asp-action="Create">Add New Step</a>
 </p>
 <table class="table">
     <thead>
@@ -26,13 +26,14 @@
              @Html.DisplayNameFor(model => model.PRegId)
          </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.Recipe)
+                @Html.DisplayNameFor(model => model.Recipe) Id
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in ViewBag.PrepList as IEnumerable<KTR.Models.Preparation>)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Step)
@@ -47,14 +48,17 @@
             @Html.DisplayFor(modelItem => item.PRegId)
         </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.Recipe.RecipeName)
+                @Html.DisplayFor(modelItem => item.RecipeId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PrepId">Edit</a> |
-                @*<a asp-action="Details" asp-route-id="@item.PrepId">Details</a>*@ |
+                <a asp-action="Details" asp-route-id="@item.PrepId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.PrepId">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<form>
+    <input type="button" value="Go back" onclick="history.back()" class="btn btn-success">
+</form>

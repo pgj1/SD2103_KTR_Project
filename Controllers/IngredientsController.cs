@@ -93,6 +93,8 @@ namespace KTR.Controllers
         public IActionResult Create()
         {
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName");
+            ViewData["RecipeName"] = (_context.Recipes, "RecipeId", "RecipeName");
+
             return View();
         }
 
@@ -218,42 +220,67 @@ namespace KTR.Controllers
         //                          Show Users their own ingredients so they can edit them
         // *********************************************************************************************************
 
+        //public async Task<IActionResult> ShowIngredients(int id)
+        //{
+        //    KTRContext context = new KTRContext();
+        //    string ShowId = _userManager.GetUserId(User);
+        //    var RList = _context.Recipes;
+        //    var IList = _context.Ingredients;
+        //    var kTRContext = _context.Ingredients.Include(i => i.Recipe);
+
+
+        //    if (id != 0)
+        //    {
+
+        //        var recipeList = (from r in context.Recipes
+        //                          where r.RecipeId == id
+        //                          select r.RecipeName);
+        //        ViewBag.RecipeName = recipeList;
+
+        //        Ingredients profile = await _context.Ingredients.FindAsync(id);
+
+        //        if (profile != null)
+        //        {
+        //            var MyIList = (from i in context.Ingredients
+        //                           where i.RecipeId == id
+        //                           select i);
+        //            ViewBag.IngredientList = MyIList;
+
+        //            return View(await kTRContext.ToListAsync());
+        //        }
+        //        else
+        //        {
+        //            return RedirectToAction("Recipes", "ShowRecipes");
+        //        }
+
+        //    }
+        //    return RedirectToAction("Recipes", "ShowRecipes");
+        //}
+
+        [Authorize]
         public async Task<IActionResult> ShowIngredients(int id)
         {
-            KTRContext context = new KTRContext();
-            string ShowId = _userManager.GetUserId(User);
-            var RList = _context.Recipes;
-            var IList = _context.Ingredients;
-
             if (id != 0)
             {
+                var kTRContext = _context.Ingredients.Include(i => i.Recipe);
 
-                var recipeList = (from r in context.Recipes
-                                  where r.RecipeId == id
-                                  select r.RecipeName);
-                ViewBag.RecipeName = recipeList;
-
-                Ingredients profile = await _context.Ingredients.FindAsync(id);
-
-                if (profile != null)
-                {
-                    var MyIList = (from i in context.Ingredients
+                var MyIList = (from i in _context.Ingredients
                                    where i.RecipeId == id
                                    select i);
                     ViewBag.IngredientList = MyIList;
 
-                    return View(MyIList);
-                }
-                else
-                {
-                    return RedirectToAction("Recipes", "ShowRecipes");
-                }
+        //                                       return View(await kTRContext.ToListAsync());
 
-            }
+
+
+
+                return View(await kTRContext.ToListAsync());
+             }
+
             return RedirectToAction("Recipes", "ShowRecipes");
+
         }
 
 
-        
     }
 }

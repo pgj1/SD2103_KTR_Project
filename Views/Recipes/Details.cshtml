@@ -1,4 +1,6 @@
 ﻿@model KTR.Models.Recipes
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> userManager
 
 
 @{
@@ -6,13 +8,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2> @Html.DisplayFor(model => model.RecipeName)</h2>
+<h2 class="flextop"> @Html.DisplayFor(model => model.RecipeName)</h2>
 
 <hr />
 <div>
     <h4>Recipe Details</h4>
-    
+
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PhotoPath)
+        </dt>
+        <dd>
+            <img src="/FoodPhotos/@Html.DisplayFor(model => model.PhotoPath)" width="75" heigth="75" />
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.RecipeName)
         </dt>
@@ -23,15 +32,15 @@
             @Html.DisplayNameFor(model => model.Servings)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Servings) 
+            @Html.DisplayFor(model => model.Servings)
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.CategoryId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CatName) 
-                      
+            @Html.DisplayFor(model => model.CategoryId)
+
         </dd>
 
         <dt>
@@ -43,11 +52,11 @@
 
 
         @*<dt>
-            @Html.DisplayNameFor(model => model.LastUpdated)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastUpdated)
-        </dd>*@
+                @Html.DisplayNameFor(model => model.LastUpdated)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.LastUpdated)
+            </dd>*@
         <dt>
             @Html.DisplayNameFor(model => model.Description)
         </dt>
@@ -56,30 +65,25 @@
         </dd>
 
         <dt>
-             @Html.DisplayNameFor(model => model.StatusId) 
+            @Html.DisplayNameFor(model => model.StatusId)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.StatusId)
         </dd>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.User) Owner
+        <dt>
+            @Html.DisplayNameFor(model => model.User) Id
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DisplayName)
-        </dd>*@
-         
-    <dt>
-          @Html.DisplayNameFor(model => model.PhotoPath)   
-    </dt>
-        <dd>
-           <img src="/FoodPhotos/@Html.DisplayFor(model => model.PhotoPath)" width="75" heigth="75"/>
+            @Html.DisplayFor(model => model.UserId)
         </dd>
+
+
 
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit</a> |
     <a asp-controller="Ingredients" asp-action="ShowIngredients" asp-route-id="@Model.RecipeId">View Ingredient List</a> |
+    <a asp-controller="Preparation" asp-action="MyPrep" asp-route-id="@Model.RecipeId"> View Recipe Instructions</a> |
     <a asp-action="ShowRecipes">Back to My Recipe List</a>
 </div>
- 

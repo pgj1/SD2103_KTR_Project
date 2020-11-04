@@ -1,17 +1,18 @@
-﻿@model KTR.Models.Ingredients
-
+﻿@model IEnumerable<KTR.Models.Ingredients>
 @using Microsoft.AspNetCore.Identity;
-@using Microsoft.AspNetCore.Authorization;
-@inject UserManager<IdentityUser> userManager
-@inject IEnumerable<KTR.Models.Recipes> match;
-@inject IEnumerable<KTR.Models.Ingredients> match;
+    @using Microsoft.AspNetCore.Authorization;
+    @inject UserManager<IdentityUser> userManager
+    @inject IEnumerable<KTR.Models.Recipes> match;
+    @inject IEnumerable<KTR.Models.Ingredients> match;
 
 
 
-@using System.Collections.Generic;
-@using System.Linq;
-@using System.Text;
-@using System.Threading;
+    @using System.Collections.Generic;
+    @using System.Linq;
+    @using System.Text;
+    @using System.Threading;
+    @using KTR.Models
+
 
 
 
@@ -20,15 +21,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Ingredient List for @ViewBag.RecipeName</h2>
+<h2 class="flextop"> @Html.DisplayNameFor(model => model.Recipe) Ingredients</h2>
 
 <p>
-    <a asp-controller="Ingredients" asp-action="Create">Add New Ingredients</a>
+    <a asp-action="Create">Add New Ingredient</a>
 </p>
 
 
 <div>
-    @*<h4>Ingredients</h4*@>
+    @*<h4>Ingredients</h4*@
     <hr />
 
     <table class="table">
@@ -46,12 +47,17 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Prep)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RecipeId)
+                </th>
+
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in ViewBag.IngredientList as IEnumerable<KTR.Models.Ingredients>)
 
+            @*@foreach (var item in Model)*@
+            @foreach (var item in ViewBag.IngredientList as IEnumerable<KTR.Models.Ingredients>)
             {
                 <tr>
                     <td>
@@ -69,19 +75,26 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Prep)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecipeId)
+                    </td>
+
 
                     <td>
                         @*<a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |*@
                         <a asp-action="Edit" asp-route-id="@item.IngredientId">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.IngredientId">Delete</a>
+                        <a asp-action="Delete" asp-route-id="@item.IngredientId">Delete</a> |
+                        @*<a asp-controller="Recipe" asp-action="Details" asp-route-id="@item.RecipeId">Back to Description</a>*@
                     </td>
+                </tr>
+                <tr>
                 </tr>
 
             }
         </tbody>
     </table>
+    <form>
+        <input type="button" value="Back to details" onclick="history.back()" class="btn btn-success">
+    </form>
+</div>
 
-</div>
-<div>
-   <a asp-action="Details/@Model.RecipeId">Back to Description</a>
-</div>

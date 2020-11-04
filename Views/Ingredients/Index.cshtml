@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<KTR.Models.Ingredients>
-
+ 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2> @Html.DisplayNameFor(model => model.Recipe) Ingredients</h2>
+<h2 class="flextop"> @Html.DisplayNameFor(model => model.Recipe) Ingredients</h2>
 
 <p>
     <a asp-action="Create">Add New Ingredient</a>
@@ -66,3 +66,6 @@
 }
     </tbody>
 </table>
+<div>
+    <a asp-controller="Preparation" asp-action="Index">Go to recipe preparation</a>
+</div>
