@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2 class="flextop">Edit User Profile</h2>
 
-<h4>Users</h4>
+<h4>@Html.DisplayFor(model => model.UserId): @Html.DisplayFor(model => model.DisplayName)</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,13 +24,27 @@
                 <input asp-for="Lname" class="form-control" />
                 <span asp-validation-for="Lname" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="DisplayName" class="control-label"></label>
+                <input asp-for="DisplayName" class="form-control" />
+                <span asp-validation-for="DisplayName" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input readonly="readonly" asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <label asp-for="UserId" class="control-label"></label>
+                <input readonly="readonly" asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="btn btn-success" />
             </div>
         </form>
     </div>

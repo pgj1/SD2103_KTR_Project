@@ -24,13 +24,17 @@ namespace KTR.Controllers
 
         }
 
-        // GET: Users
+        // *********************************************************************************************************
+        //                                          GET: Users
+        // *********************************************************************************************************
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Users.ToListAsync());
         }
 
         // GET: Users/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,25 +52,30 @@ namespace KTR.Controllers
             return View(users);
         }
 
-
-        // GET: UserProfile/Create
+        // *********************************************************************************************************
+        //                                      GET: UserProfile/Create User Profile
+        // *********************************************************************************************************
+        [Authorize]
         public IActionResult CreateProfile()
         {
             return View();
         }
 
 
-
-        // GET: Users/Create
+        // *********************************************************************************************************
+        //                                          GET: Users/Create User Login
+        // *********************************************************************************************************
         public IActionResult CreateUser()
         {
             return View();
         }
-
+        // *********************************************************************************************************
         // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // *********************************************************************************************************
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser([Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
         {
@@ -79,11 +88,13 @@ namespace KTR.Controllers
             return View(users);
         }
 
-
+        // *********************************************************************************************************
         // POST: Users/CreateProfule
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // *********************************************************************************************************
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateProfile([Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
         {
@@ -97,8 +108,10 @@ namespace KTR.Controllers
             return View(users);
         }
 
-
-        // GET: Users/Edit/5
+        // *********************************************************************************************************
+        //                                              GET: Users/Edit/5
+        // *********************************************************************************************************
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -113,13 +126,15 @@ namespace KTR.Controllers
             }
             return View(users);
         }
-
+        // *********************************************************************************************************
         // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // *********************************************************************************************************
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Fname,Lname,Email,DisplayName,RegId")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,Fname,Lname,Email,DisplayName")] Users users)
         {
             if (id != users.UserId)
             {
@@ -149,7 +164,11 @@ namespace KTR.Controllers
             return View(users);
         }
 
-        // GET: Users/Delete/5
+        // *********************************************************************************************************
+        //                                                  GET: Users/Delete/5
+        // *********************************************************************************************************
+
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -167,8 +186,11 @@ namespace KTR.Controllers
             return View(users);
         }
 
-        // POST: Users/Delete/5
+        // *********************************************************************************************************
+        //                                      POST: Users/Delete/5
+        // *********************************************************************************************************
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

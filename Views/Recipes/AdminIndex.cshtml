@@ -10,16 +10,16 @@
 }
 
 
-<h2>Recipes</h2>
+<h2 class="flextop">Admin View - All Recipes</h2>
 
 <p>
-    <a asp-controller="Recipes" asp-action="Create">Create New</a>
+    <a asp-controller="Recipes" asp-action="Create">Create New Recipe</a> | <a asp-controller="Users" asp-action="Index">View Users </a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @* @Html.DisplayNameFor(model => model.RecipeName)*@ Recipe Name
+                @Html.DisplayNameFor(model => model.RecipeName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Description)
@@ -27,22 +27,22 @@
             <th>
                 @Html.DisplayNameFor(model => model.Servings)
             </th>
-            
-                 <th>
-                    @Html.DisplayNameFor(model => model.LastUpdated)
-                </th>
-            
+
             <th>
-                @*@Html.DisplayNameFor(model => model.CategoryId)*@ Food Category
+                @Html.DisplayNameFor(model => model.LastUpdated)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.MainId)*@ Main Ingredient
+                @Html.DisplayNameFor(model => model.MainId)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.StatusId)*@ Visibility
+                @Html.DisplayNameFor(model => model.StatusId)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.UserId)*@ UserId
+                @Html.DisplayNameFor(model => model.UserId)
             </th>
             <th>Actions</th>
         </tr>
@@ -62,12 +62,12 @@
                     @Html.DisplayFor(modelItem => item.Servings)
                 </td>
                 <td>
-                        @Html.DisplayFor(modelItem => item.LastUpdated)
+                    @Html.DisplayFor(modelItem => item.LastUpdated)
                 </td>
-               
-            <td>
-                @Html.DisplayFor(modelItem => item.CatName.CatName)
-             </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.CatName.CatName)
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.MainName.MainName)
@@ -91,4 +91,4 @@
     </tbody>
 </table>
 
-<a asp-controller= "Recipes" asp-action="ShowRecipes">Show My Recipes</a>
+@*<a asp-controller= "Recipes" asp-action="ShowRecipes">Show My Recipes</a>*@

@@ -60,6 +60,21 @@ namespace KTR.Controllers
             //var kTRContext = _context.Ingredients.Include(i => i.Recipe);
             //return View(await kTRContext.ToListAsync());
 
+            //var UserRole = UserManager
+            var CurrentUser = _userManager.GetUserName(User);
+
+            //var UserRole= _userManager.GetUsersInRoleAsync("Administrator");
+            
+            //string ShowId = _userManager.GetUserId(User);
+            
+            if (CurrentUser == "admin@ktr.com")
+                {
+                return RedirectToAction("AdminIndex", "Recipes");
+                }
+
+                     
+
+
             var KTRContext = _context.Recipes.Include(s => s.StatusName).Include(c => c.CatName).Include(m => m.MainName);
             return View(await KTRContext.ToListAsync());
         }
@@ -334,6 +349,14 @@ namespace KTR.Controllers
             KTRContext context = new KTRContext();
             // Recipes[] recipeLists =  _context.Recipes.ToArray();
 
+
+            //Check for current user, send to admin page if admin is logged in. 
+            var CurrentUser = _userManager.GetUserName(User);
+
+             if (CurrentUser == "admin@ktr.com")
+            {
+                return RedirectToAction("AdminIndex", "Recipes");
+            }
 
 
 

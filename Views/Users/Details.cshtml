@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2 class="flextop">User Profile </h2>
 
 <div>
-    <h4>Users</h4>
+    <h4> @Html.DisplayFor(model => model.DisplayName)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -24,10 +24,22 @@
             @Html.DisplayFor(model => model.Lname)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Email)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
         </dd>
     </dl>
 </div>
