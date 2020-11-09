@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit Ingredient</h2>
+<h2 class="flextop">Edit Ingredient</h2>
 
 @*<h4>Ingredients</h4>*@
 <hr />
@@ -55,9 +55,9 @@
                 <span asp-validation-for="IRegId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save Changes" class="btn btn-info" />
+                <input type="submit" value="Save Changes" class="btn btn-success" />
                 @*<input type="button" asp-action="Index"  value="Cancel" class="btn btn-danger"/>*@
-                <a asp-action="Index" class="btn btn-danger">Cancel</a>
+                <a asp-action="ShowIngredients" asp-route-id="@ViewBag.SavedRecipeId" class="btn btn-info">Back to List</a>
 
             </div>
         </form>

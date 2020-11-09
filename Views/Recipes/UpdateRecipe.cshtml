@@ -21,7 +21,7 @@
             <div class="form-group">
                 @*<input type="hidden" asp-for="RecipeId" />*@
                 <label asp-for="RecipeId" class="control-label"></label>
-                <input disabled="disabled"  asp-for="RecipeId" class="form-control" />
+                <input readonly=readonly asp-for="RecipeId" class="form-control" />
                 <span asp-validation-for="RecipeId" class="text-danger"></span>
 
             </div>
@@ -71,6 +71,8 @@
                 </div>
 
 
+
+
                 <div class="form-group">
                     <label asp-for="LastUpdated" class="control-label">Date</label>
                     <input readonly=readonly asp-for="LastUpdated" class="form-control" value="@DateTime.Now" type="datetime" />
@@ -84,20 +86,11 @@
                     <span asp-validation-for="UserId" class="text-danger"></span>
                 </div>
 
-            <div class="form-group">
-                <label asp-for="RegId" class="control-label"></label>
-                <input readonly="readonly" disabled="disabled"  asp-for="RegId" class="form-control"  value="@userManager.GetUserId(User)"/>
-                <span asp-validation-for="RegId" class="text-danger"></span>
-
-            </div>
-
                 <br />
                 <div class="form-group">
-                    <input type="submit" value="Save Changes" class="btn btn-success" />
+                    <input type="submit" value="Save Changes" class="btn btn-info" />
                     <a asp-action="ShowRecipes" class="btn btn-danger">Cancel</a>
                 </div>
-
-
 </form>
     </div>
 </div>

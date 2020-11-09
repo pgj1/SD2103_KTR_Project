@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<KTR.Models.Ingredients>
 @using Microsoft.AspNetCore.Identity;
-    @using Microsoft.AspNetCore.Authorization;
-    @inject UserManager<IdentityUser> userManager
-    @inject IEnumerable<KTR.Models.Recipes> match;
-    @inject IEnumerable<KTR.Models.Ingredients> match;
+@using Microsoft.AspNetCore.Authorization;
+@inject UserManager<IdentityUser> userManager
+@inject IEnumerable<KTR.Models.Recipes> match;
+@inject IEnumerable<KTR.Models.Ingredients> match;
 
 
 
-    @using System.Collections.Generic;
-    @using System.Linq;
-    @using System.Text;
-    @using System.Threading;
-    @using KTR.Models
+@using System.Collections.Generic;
+@using System.Linq;
+@using System.Text;
+@using System.Threading;
+@using KTR.Models
 
 
 
@@ -24,7 +24,7 @@
 <h2 class="flextop"> @Html.DisplayNameFor(model => model.Recipe) Ingredients</h2>
 
 <p>
-    <a asp-action="Create">Add New Ingredient</a>
+    <a asp-action="Create" asp-route-id="@ViewBag.SavedRecipeId">Add New Ingredient</a>
 </p>
 
 
@@ -83,7 +83,7 @@
                     <td>
                         @*<a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |*@
                         <a asp-action="Edit" asp-route-id="@item.IngredientId">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.IngredientId">Delete</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IngredientId">Delete</a> 
                         @*<a asp-controller="Recipe" asp-action="Details" asp-route-id="@item.RecipeId">Back to Description</a>*@
                     </td>
                 </tr>
@@ -92,9 +92,12 @@
 
             }
         </tbody>
+        
     </table>
     <form>
-        <input type="button" value="Back to details" onclick="history.back()" class="btn btn-success">
+        @*<input type="button" value="Go Back" onclick="history.back()" class="btn btn-success">*@
+        <a class="btn btn-info" asp-controller="Recipes" asp-action="Details" asp-route-id="@ViewBag.SavedRecipeId">Back to List</a>
+
     </form>
 </div>
 

@@ -48,6 +48,8 @@ namespace KTR.Controllers
         // *********************************************************************************************************
         public async Task<IActionResult> Show(int? id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
@@ -68,8 +70,11 @@ namespace KTR.Controllers
         //                                          GET: Ingredients/Details/5
         // *********************************************************************************************************
 
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
@@ -90,28 +95,35 @@ namespace KTR.Controllers
         //                                              GET: Ingredients/Create
         // *********************************************************************************************************
 
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName");
+            ViewData["RecipeId"] = new SelectList(_context.Recipes, "Id", "Id");
             ViewData["RecipeName"] = (_context.Recipes, "RecipeId", "RecipeName");
+            ViewBag.SavedRecipeId = id;
 
             return View();
         }
 
+
         // POST: Ingredients/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,IRegId,UserId")] Ingredients ingredients)
+        public async Task<IActionResult> Create(int? id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,IRegId,UserId")] Ingredients ingredients)
         {
+             ViewBag.SavedRecipeId = id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(ingredients);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction("ShowRecipes", "Recipes");
+                return View();
             }
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", ingredients.RecipeId);
+           // ViewBag.SavedRecipeId = ingredients.RecipeId;
             return View(ingredients);
         }
 
@@ -121,6 +133,8 @@ namespace KTR.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
@@ -142,10 +156,13 @@ namespace KTR.Controllers
         // *********************************************************************************************************
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,IRegId,UserId")] Ingredients ingredients)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id != ingredients.IngredientId)
             {
                 return NotFound();
@@ -179,8 +196,11 @@ namespace KTR.Controllers
         //                                          GET: Ingredients/Delete/5
         // *********************************************************************************************************
 
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
@@ -201,6 +221,7 @@ namespace KTR.Controllers
         //                                              POST: Ingredients/Delete/5
         // *********************************************************************************************************
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -260,6 +281,8 @@ namespace KTR.Controllers
         [Authorize]
         public async Task<IActionResult> ShowIngredients(int id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id != 0)
             {
                 var kTRContext = _context.Ingredients.Include(i => i.Recipe);

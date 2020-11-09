@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using KTR.Models;
 using KTR.ViewModels;
 using System.IO;
+using System.Web;
 
 
 
@@ -109,8 +110,11 @@ namespace KTR.Controllers
         //                                        GET: Recipes/Details/5 
         // *********************************************************************************************************
 
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
@@ -156,6 +160,7 @@ namespace KTR.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         // *********************************************************************************************************
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecipeId,RecipeName,Description,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,RegId")] Recipes recipes, IFormFile FilePhoto)
@@ -180,7 +185,9 @@ namespace KTR.Controllers
             {
                 _context.Add(recipes);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                 return RedirectToAction(nameof(ShowRecipes));
+                //return RedirectToAction("Create", "Ingredients");
             }
             ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
             ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
@@ -198,6 +205,7 @@ namespace KTR.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.SavedRecipeId = id;
 
             if (id == null)
             {
@@ -214,30 +222,39 @@ namespace KTR.Controllers
             ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
             ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "Email", "UserId", recipes.UserId);
+            ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
 
 
             return View(recipes);
         }
 
-        
+
         // *********************************************************************************************************
         //                                                  POST: Recipes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         // *********************************************************************************************************
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,RecipeName,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,Description,RegId")] Recipes recipes, 
+        public async Task<IActionResult> Orig_Edit(int id, [Bind("RecipeId,RecipeName,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,Description,RegId")] Recipes recipes,
             IFormFile FilePhoto)
+
         {
             ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
             ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
             ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "DisplayName", recipes.UserId);
+            ViewBag.SavedRecipeId = id;
 
-            int RecipeId = id;
- 
+            recipes = await _context.Recipes.FindAsync(id);
+            //recipes.RecipeId = id;
+            if (id != recipes.RecipeId)
+            {
+                //return NotFound();
+                return RedirectToAction(nameof(ShowRecipes));
+            }
+
             if (FilePhoto.Length > 0)
             {
 
@@ -251,10 +268,7 @@ namespace KTR.Controllers
                 }
             }
 
-            if (id != recipes.RecipeId)
-            {
-                return NotFound();
-            }
+
 
             if (ModelState.IsValid)
             {
@@ -274,38 +288,135 @@ namespace KTR.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ShowRecipes));
             }
 
             // return View(recipes);
                return RedirectToAction(nameof(ShowRecipes));
         }
 
-         
 
-        // GET: Recipes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+
+
+
+        //     BROKEN  XXX_Edit
+        // *********************************************************************************************************
+        //                                                  POST: Recipes/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // *********************************************************************************************************
+        [HttpPost]
+        //[HttpPost, ActionName("Edit")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeName,UserId,Servings,CategoryId,StatusId,LastUpdated,MainId,Description,RegId")] Recipes recipes, IFormFile FilePhoto)
         {
-            if (id == null)
+            ViewBag.SavedRecipeId = id;
+
+            ViewData["CategoryId"] = new SelectList(_context.RecipeCategory, "CategoryId", "CatName", recipes.CategoryId);
+            ViewData["MainId"] = new SelectList(_context.MainIngredient, "MainId", "MainName", recipes.MainId);
+            ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "DisplayName", recipes.UserId);
+
+            //recipes.RecipeId = id;
+
+            if (FilePhoto != null)
             {
-                return NotFound();
+                if (FilePhoto.Length > 0)
+                {
+
+                    string photoPath = _webroot.WebRootPath + "\\FoodPhotos\\";
+                    var fileName = Path.GetFileName(FilePhoto.FileName);
+
+                    using (var stream = System.IO.File.Create(photoPath + fileName))
+                    {
+                        await FilePhoto.CopyToAsync(stream);
+                        recipes.PhotoPath = fileName;
+                    }
+
+
+                    if (id != recipes.RecipeId)
+                    {
+                        return NotFound();
+                    }
+
+                    if (ModelState.IsValid)
+                    {
+                        try
+                        {
+                            _context.Update(recipes);
+                            await _context.SaveChangesAsync();
+                        }
+                        catch (DbUpdateConcurrencyException)
+                        {
+                            if (!RecipesExists(recipes.RecipeId))
+                            {
+                                return NotFound();
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+                        return RedirectToAction(nameof(ShowRecipes));
+
+                    }
+
+                    return View(recipes);
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
-            var recipes = await _context.Recipes
-                .Include(r => r.CategoryId)
-                .Include(r => r.MainId)
-                .Include(r => r.StatusId)
-                .Include(r => r.UserId)
-                .FirstOrDefaultAsync(m => m.RecipeId == id);
-            if (recipes == null)
-            {
-                return NotFound();
-            }
-
-            return View(recipes);
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: Recipes/Delete/5
+
+
+
+
+
+
+
+
+
+            // *********************************************************************************************************
+            //                                          GET: Recipes/Delete/5
+            // *********************************************************************************************************
+
+               [Authorize]
+            public async Task<IActionResult> Delete(int? id)
+            {
+            ViewBag.SavedRecipeId = id;
+
+            if (id == null)
+               {
+                return NotFound();
+               }
+
+            ///var recipes = await _context.Recipes
+            //.Include(r => r.CategoryId)
+            //.Include(r => r.MainId)
+            //.Include(r => r.StatusId)
+            //.Include(r => r.UserId)
+            //   .FirstOrDefaultAsync(m => m.RecipeId == id);
+
+            var recipes = await _context.Recipes
+                .FirstOrDefaultAsync(m => m.RecipeId == id);
+
+            if (recipes == null)
+               {
+                return NotFound();
+               }
+
+                return View(recipes);
+            }
+
+        // *********************************************************************************************************
+        //                                              POST: Recipes/Delete/5
+        // *********************************************************************************************************
+
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -313,7 +424,7 @@ namespace KTR.Controllers
             var recipes = await _context.Recipes.FindAsync(id);
             _context.Recipes.Remove(recipes);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(ShowRecipes));
         }
 
         private bool RecipesExists(int id)
@@ -321,6 +432,10 @@ namespace KTR.Controllers
             return _context.Recipes.Any(e => e.RecipeId == id);
         }
 
+
+
+
+        // *********************************************************************************************************
         [Authorize]
         public IActionResult RecipeList()
         {
@@ -333,7 +448,7 @@ namespace KTR.Controllers
    // *************************************************************************************************
 
         [Authorize]
-        public async Task<IActionResult> ShowRecipes()
+        public IActionResult ShowRecipes()
         {
             //ViewBag.CategoryId = new SelectList(_context.RecipeCategory, "CategoryId", "CatName");
             ViewBag.CategoryId = (_context.RecipeCategory, "CategoryId", "CatName");
@@ -366,7 +481,7 @@ namespace KTR.Controllers
                 var recipeList = (from r in context.Recipes
                               where r.RegId == ShowId
                              select r);
-            ViewBag.Data1 = recipeList;
+                ViewBag.Data1 = recipeList.Include(s => s.StatusName).Include(c => c.CatName).Include(m => m.MainName);
 
                 //ViewBag.EditCatName = (_context.RecipeCategory, "CategoryId", "CatName");
                 //ViewBag.EditMainName = new SelectList(_context.MainIngredient, "MainName");
@@ -378,7 +493,7 @@ namespace KTR.Controllers
                 ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
                 ViewData["UserId"] = new SelectList(_context.Users, "UserId", "DisplayName");
 
-                return View();
+                return View(ViewBag.Data1.ToListAsync());
              }
 
            return RedirectToAction("Home");
@@ -387,15 +502,13 @@ namespace KTR.Controllers
 
         }
 
-            
-            
-        
-
-       
 
 
 
+
+        // *************************************************************************************************
         // Show Users ingredients for their recipes so they can edit them
+        // *************************************************************************************************
         [Authorize]
         public async Task<IActionResult> ShowIngredients()
         {
@@ -433,10 +546,10 @@ namespace KTR.Controllers
         }
 
 
-
-
-
+       
     }
+} 
 
-}
+
+
 

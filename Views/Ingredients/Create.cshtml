@@ -37,7 +37,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="RecipeId" class="control-label"></label>
-                <Input asp-for="RecipeId" class="form-control" value="@ViewData["RecipeName"] = RecipeName" />
+                <Input asp-for="RecipeId" class="form-control" value="@ViewBag.SavedRecipeId" />
+                <span asp-validation-for="RecipeId" class="text-danger"></span>
             </div>
             
 
@@ -48,14 +49,15 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Ingredient" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Ingredients" asp-action="ShowIngredients" class="btn btn-info" asp-route-id="@ViewBag.SavedRecipeId">Back to List</a>
+
 </div>
 
 @section Scripts {

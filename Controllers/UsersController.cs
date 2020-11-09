@@ -111,21 +111,79 @@ namespace KTR.Controllers
         // *********************************************************************************************************
         //                                              GET: Users/Edit/5
         // *********************************************************************************************************
+        //[Authorize]
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var users = await _context.Users.FindAsync(id);
+        //    if (users == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(users);
+        //}
+
+
+
+        // *********************************************************************************************************
+        //                                              GET: Users/Edit/5   TEST
+        // *********************************************************************************************************
+
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var CurrentUserId = _userManager.GetUserId(User);
+            var CurrentUserName = _userManager.GetUserName(User);
 
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            if (CurrentUserId == "URegId")
             {
-                return NotFound();
+
+                //action goes here
+                 if (id == null)
+                 {
+                        return NotFound();
+                  }
+
+                var users = await _context.Users.FindAsync(id);
+                    if (users == null)
+                     {
+                     return NotFound();
+                     }
+
+                return View(users);
             }
-            return View(users);
+            if (CurrentUserName == "admin@ktr.com")
+                {
+                    //same action here
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
+
+                    var users = await _context.Users.FindAsync(id);
+                    if (users == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(users);
+              }
+
+            return NotFound();
+
+
+
         }
+
+
+
+
+
         // *********************************************************************************************************
         // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

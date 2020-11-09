@@ -33,8 +33,8 @@ namespace KTR.Controllers
         //                                  For Admin
         // **********************************************************************************
 
-        [Authorize]
-        public async Task<IActionResult> Index(int id)
+        [Authorize(Roles ="Administrator")]
+        public async Task<IActionResult> Index()
         {
             var kTRContext = _context.Preparation.Include(p => p.Recipe);
             return View(await kTRContext.ToListAsync());
@@ -49,6 +49,7 @@ namespace KTR.Controllers
         [Authorize]
         public async Task<IActionResult> MyPrep(int id)
         {
+            ViewBag.SavedRecipeId = id;
             string ShowId = _userManager.GetUserId(User);
             var kTRContext = _context.Preparation.Include(p => p.Recipe);
 
@@ -74,8 +75,11 @@ namespace KTR.Controllers
 
 
         // GET: Preparation/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
@@ -93,9 +97,13 @@ namespace KTR.Controllers
             return View(preparation);
         }
 
+        // ********************************************************************************
         // GET: Preparation/Create
-        public IActionResult Create()
+        // ********************************************************************************
+        [Authorize]
+        public IActionResult Create(int id)
         {
+            ViewBag.SavedRecipeId = id;
             ViewData["PRegId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName");
             return View();
@@ -104,24 +112,31 @@ namespace KTR.Controllers
         // POST: Preparation/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrepId,Step,Instr,RecipeId,Updated,PRegId")] Preparation preparation)
+        public async Task<IActionResult> Create(int id,[Bind("PrepId,Step,Instr,RecipeId,Updated,PRegId")] Preparation preparation)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(preparation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(MyPrep(ViewBag.SavedRecipId));
             }
             ViewData["PRegId"] = new SelectList(_context.AspNetUsers, "Id", "Id", preparation.PRegId);
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", preparation.RecipeId);
-            return View(preparation);
+            //return View(preparation);
+            return RedirectToAction(MyPrep(ViewBag.SavedRecipId));
         }
 
         // GET: Preparation/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
@@ -140,10 +155,13 @@ namespace KTR.Controllers
         // POST: Preparation/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PrepId,Step,Instr,RecipeId,Updated,PRegId")] Preparation preparation)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id != preparation.PrepId)
             {
                 return NotFound();
@@ -175,17 +193,23 @@ namespace KTR.Controllers
         }
 
         // GET: Preparation/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
         {
+            ViewBag.SavedRecipeId = id;
+
             if (id == null)
             {
                 return NotFound();
             }
 
             var preparation = await _context.Preparation
-                .Include(p => p.PReg)
-                .Include(p => p.Recipe)
-                .FirstOrDefaultAsync(m => m.PrepId == id);
+               .FirstOrDefaultAsync(m => m.PrepId == id);
+
+            //var preparation = await _context.Preparation
+            //    .Include(p => p.PReg)
+            //    .Include(p => p.Recipe)
+            //    .FirstOrDefaultAsync(m => m.PrepId == id);
             if (preparation == null)
             {
                 return NotFound();
@@ -195,6 +219,7 @@ namespace KTR.Controllers
         }
 
         // POST: Preparation/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

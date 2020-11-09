@@ -48,7 +48,7 @@ namespace KTR.Models
         [DisplayName ("Image")]
         public string PhotoPath { get; set; }
 
-        [Required]
+        //[Required]
         public string RegId { get; set; }
 
         public RecipeCategory CatName { get; set; }
