@@ -71,6 +71,42 @@ hr {
     margin-left: -10px;
 }
 
+/*Buttons with black text  */
+
+
+.btn-info {
+    color: #333;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.btn-danger-ktr {
+    color: black;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+
+.btn-success-ktr {
+    color: black;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+
+.btn-warning-ktr {
+    color: black;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+
+.btn-default-ktr {
+    color: black;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+
 /* To make image fit in an area */
 .img {
   width: 100%;

@@ -21,7 +21,7 @@ namespace KTR.Controllers
         private readonly KTRContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public PreparationController(KTRContext context, UserManager<IdentityUser> userManager, IHostingEnvironment webroot)
+        public PreparationController(KTRContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -128,14 +128,14 @@ namespace KTR.Controllers
             ViewData["PRegId"] = new SelectList(_context.AspNetUsers, "Id", "Id", preparation.PRegId);
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", preparation.RecipeId);
             //return View(preparation);
-            return RedirectToAction(MyPrep(ViewBag.SavedRecipId));
+            return RedirectToAction("MyPrep","ViewBag.SavedRecipId");
         }
 
         // GET: Preparation/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedPrepId = id;
 
             if (id == null)
             {
@@ -149,6 +149,9 @@ namespace KTR.Controllers
             }
             ViewData["PRegId"] = new SelectList(_context.AspNetUsers, "Id", "Id", preparation.PRegId);
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", preparation.RecipeId);
+
+            ViewBag.SavedRecipeId = preparation.RecipeId;
+
             return View(preparation);
         }
 
@@ -160,7 +163,7 @@ namespace KTR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PrepId,Step,Instr,RecipeId,Updated,PRegId")] Preparation preparation)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedRPrepId = id;
 
             if (id != preparation.PrepId)
             {
@@ -185,7 +188,8 @@ namespace KTR.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                ViewBag.SavedRecipeId = preparation.RecipeId;
+                return RedirectToAction("MyPrep",ViewBag.SavedRecipeId);
             }
             ViewData["PRegId"] = new SelectList(_context.AspNetUsers, "Id", "Id", preparation.PRegId);
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", preparation.RecipeId);
@@ -196,12 +200,12 @@ namespace KTR.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedPrepId = id;
 
-            if (id == null)
-            {
-                return NotFound();
-            }
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
 
             var preparation = await _context.Preparation
                .FirstOrDefaultAsync(m => m.PrepId == id);
@@ -215,7 +219,9 @@ namespace KTR.Controllers
                 return NotFound();
             }
 
-            return View(preparation);
+            ViewBag.SavedRecipeId = preparation.RecipeId;
+            //return View(preparation);
+            return RedirectToAction("MyPrep", ViewBag.SavedRecipeId);
         }
 
         // POST: Preparation/Delete/5
@@ -227,7 +233,10 @@ namespace KTR.Controllers
             var preparation = await _context.Preparation.FindAsync(id);
             _context.Preparation.Remove(preparation);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            ViewBag.SavedRecipeId = preparation.RecipeId;
+            // return RedirectToAction(nameof(Index));
+            return RedirectToAction("MyPrep", ViewBag.SavedRecipeId);
         }
 
         private bool PreparationExists(int id)

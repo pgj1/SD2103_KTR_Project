@@ -13,10 +13,11 @@
 <hr />
 <div>
     <h4>Recipe Details</h4>
+    <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit Recipe Details</a>
 
     <dl class="dl-horizontal">
         <dt>
-            @*@Html.DisplayNameFor(model => model.PhotoPath)*@ 
+            @*@Html.DisplayNameFor(model => model.PhotoPath)*@
         </dt>
         <dd>
             <img src="/FoodPhotos/@Html.DisplayFor(model => model.PhotoPath)" width="75" heigth="75" />
@@ -28,6 +29,14 @@
         <dd>
             @Html.DisplayFor(model => model.RecipeName)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Servings)
         </dt>
@@ -39,51 +48,45 @@
             @Html.DisplayNameFor(model => model.CategoryId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CategoryId)
-
+            @Html.DisplayFor(model => model.CatName.CatName)
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.MainId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.MainId)
-        </dd>
-
-
-        @*<dt>
-                @Html.DisplayNameFor(model => model.LastUpdated)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.LastUpdated)
-            </dd>*@
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.MainName.MainName)
         </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.StatusId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.StatusId)
+            @Html.DisplayFor(model => model.StatusName.StatusName)
         </dd>
+
         <dt>
-            @Html.DisplayNameFor(model => model.User) Id
+            @Html.DisplayNameFor(model => model.UserId)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.UserId)
         </dd>
 
-
+        <dt>
+            <!--  @Html.DisplayNameFor(model => model.LastUpdated) --> Last Updated
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdated)
+        </dd>
+               
 
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit</a> |
-    <a asp-controller="Ingredients" asp-action="ShowIngredients" asp-route-id="@Model.RecipeId">View Ingredient List</a> |
-    <a asp-controller="Preparation" asp-action="MyPrep" asp-route-id="@Model.RecipeId"> View Recipe Instructions</a> |
+
+    <a class="btn btn-info HomeText" asp-controller="Ingredients" asp-action="ShowIngredients" asp-route-id="@Model.RecipeId">View Ingredient List</a>
+    <a class="btn btn-info HomeText" asp-controller="Preparation" asp-action="MyPrep" asp-route-id="@Model.RecipeId"> View Recipe Instructions  </a>
+    <br /><br />
     <a asp-action="ShowRecipes">Back to My Recipe List</a>
+
 </div>

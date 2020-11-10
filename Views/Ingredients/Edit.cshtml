@@ -18,8 +18,8 @@
             <input type="hidden" asp-for="IngredientId" />
 
             <div class="form-group">
-                <label asp-for="RecipeId" class="control-label">Recipe Name</label>
-                <select readonly="readonly" asp-for="RecipeId" class="form-control" asp-items="ViewBag.RecipeId"></select>
+                <label asp-for="RecipeId" class="control-label"></label>
+                <input readonly="readonly" asp-for="RecipeId" class="form-control" value="@ViewBag.SavedRecipeId" />
                 <span asp-validation-for="RecipeId" class="text-danger"></span>
             </div>
 
@@ -46,7 +46,7 @@
 
             <div class="form-group">
                 <label asp-for="LastUpdated" class="control-label">Date</label>
-                <input readonly="readonly" asp-for="LastUpdated" class="form-control" />
+                <input readonly="readonly" asp-for="LastUpdated" class="form-control" value="@DateTime.Now" type="datetime" />
                 <span asp-validation-for="LastUpdated" class="text-danger"></span>
             </div>
             <div class="form-group">

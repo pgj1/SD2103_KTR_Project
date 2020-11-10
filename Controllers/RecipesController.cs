@@ -93,7 +93,7 @@ namespace KTR.Controllers
             //ViewBag.MainId = new SelectList(_context.MainIngredient, "MainId", "MainName");
             ViewBag.MainId = new SelectList(_context.MainIngredient, "MainName");
             ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
-            ViewBag.UserId = new SelectList(_context.Users, "UserId", "DisplayName");
+            ViewBag.UserId = (_context.Users, "UserId", "DisplayName");
             //ViewBag.UserId = new SelectList(_context.Users, "DisplayName");
 
 
@@ -121,10 +121,10 @@ namespace KTR.Controllers
             }
 
             var recipes = await _context.Recipes
-            //    .Include(r => r.CategoryId)
-            //    .Include(r => r.MainId)
-            //    .Include(r => r.StatusId)
-            //    .Include(r => r.Description)
+                .Include(r => r.CatName)
+                .Include(r => r.MainName)
+                .Include(r => r.StatusName)
+                //.Include(r => r.description)
                 .FirstOrDefaultAsync(m => m.RecipeId == id);
             if (recipes == null)
             {
@@ -225,7 +225,8 @@ namespace KTR.Controllers
             ViewBag.StatusId = new SelectList(_context.RecipeStatus, "StatusId", "StatusName", recipes.StatusId);
 
 
-            return View(recipes);
+            //return View(recipes);
+            return RedirectToAction(nameof(ShowRecipes));
         }
 
 
@@ -365,7 +366,7 @@ namespace KTR.Controllers
                     return View(recipes);
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(ShowRecipes));
             }
 
             return RedirectToAction(nameof(Index));
@@ -481,6 +482,7 @@ namespace KTR.Controllers
                 var recipeList = (from r in context.Recipes
                               where r.RegId == ShowId
                              select r);
+                //ViewBag.Data1 = recipeList.Include(s => s.StatusName).Include(c => c.CatName).Include(m => m.MainName);
                 ViewBag.Data1 = recipeList.Include(s => s.StatusName).Include(c => c.CatName).Include(m => m.MainName);
 
                 //ViewBag.EditCatName = (_context.RecipeCategory, "CategoryId", "CatName");
@@ -493,7 +495,7 @@ namespace KTR.Controllers
                 ViewData["StatusId"] = new SelectList(_context.RecipeStatus, "StatusId", "StatusName");
                 ViewData["UserId"] = new SelectList(_context.Users, "UserId", "DisplayName");
 
-                return View(ViewBag.Data1.ToListAsync());
+                return View();
              }
 
            return RedirectToAction("Home");

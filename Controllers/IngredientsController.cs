@@ -46,18 +46,18 @@ namespace KTR.Controllers
         // *********************************************************************************************************
         //                                          GET: Ingredients/Show/5
         // *********************************************************************************************************
-        public async Task<IActionResult> Show(int? id)
+        public async Task<IActionResult> Show(int? iid)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedIngredientId = iid;
 
-            if (id == null)
+            if (iid == null)
             {
                 return NotFound();
             }
 
             var ingredients = await _context.Ingredients
                 .Include(i => i.Recipe)
-                .FirstOrDefaultAsync(m => m.IngredientId == id);
+                .FirstOrDefaultAsync(m => m.IngredientId == iid);
             if (ingredients == null)
             {
                 return NotFound();
@@ -71,18 +71,18 @@ namespace KTR.Controllers
         // *********************************************************************************************************
 
         [Authorize]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? iid)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedIngredientId = iid;
 
-            if (id == null)
+            if (iid == null)
             {
                 return NotFound();
             }
 
             var ingredients = await _context.Ingredients
                 .Include(i => i.Recipe)
-                .FirstOrDefaultAsync(m => m.IngredientId == id);
+                .FirstOrDefaultAsync(m => m.IngredientId == iid);
             if (ingredients == null)
             {
                 return NotFound();
@@ -100,6 +100,7 @@ namespace KTR.Controllers
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "Id", "Id");
             ViewData["RecipeName"] = (_context.Recipes, "RecipeId", "RecipeName");
             ViewBag.SavedRecipeId = id;
+            
 
             return View();
         }
@@ -133,7 +134,7 @@ namespace KTR.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedIngredientId = id;
 
             if (id == null)
             {
@@ -147,6 +148,7 @@ namespace KTR.Controllers
             }
 
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", ingredients.RecipeId);
+            ViewBag.SavedRecipeId = ingredients.RecipeId;
             
             return View(ingredients);
         }
@@ -161,7 +163,7 @@ namespace KTR.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IngredientId,Amt,Unit,Item,Prep,RecipeId,LastUpdated,IRegId,UserId")] Ingredients ingredients)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedIngredientId = id;
 
             if (id != ingredients.IngredientId)
             {
@@ -186,10 +188,13 @@ namespace KTR.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                // return RedirectToAction(nameof(Index));
+                return RedirectToAction("ShowIngredients","ingredients.RecipeId");
+
             }
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "RecipeId", "RecipeName", ingredients.RecipeId);
             return View(ingredients);
+
         }
 
         // *********************************************************************************************************
@@ -199,7 +204,7 @@ namespace KTR.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
-            ViewBag.SavedRecipeId = id;
+            ViewBag.SavedIngredientId = id;
 
             if (id == null)
             {
@@ -209,6 +214,9 @@ namespace KTR.Controllers
             var ingredients = await _context.Ingredients
                 .Include(i => i.Recipe)
                 .FirstOrDefaultAsync(m => m.IngredientId == id);
+
+            ViewBag.SavedRecipeId = ingredients.RecipeId;
+
             if (ingredients == null)
             {
                 return NotFound();
@@ -229,7 +237,8 @@ namespace KTR.Controllers
             var ingredients = await _context.Ingredients.FindAsync(id);
             _context.Ingredients.Remove(ingredients);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction("ShowIngredients","ViewBag.SavedRecipeId");
         }
 
         private bool IngredientsExists(int id)
