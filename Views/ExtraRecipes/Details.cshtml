@@ -1,20 +1,14 @@
 ﻿@model KTR.Models.Recipes
 
-
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="flextop">Delete Recipe:  @Html.DisplayFor(model => model.RecipeName)</h2>
+<h2>Details</h2>
 
-<h3>
-    Are you sure you want to delete the recipe "@Html.DisplayFor(model => model.RecipeName)"?
-    <br />
-    You cannot undo this action.
-</h3>
 <div>
-    @*<h4>Recipes</h4>*@
+    <h4>Recipes</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -36,34 +30,50 @@
             @Html.DisplayFor(model => model.LastUpdated)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.CategoryId)
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PhotoPath)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PhotoPath)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RegId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RegId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CatName)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.CatName.CatName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.MainId)
+            @Html.DisplayNameFor(model => model.MainName)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.MainName.MainName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.StatusId)
+            @Html.DisplayNameFor(model => model.StatusName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.StatusId) 
+            @Html.DisplayFor(model => model.StatusName.StatusName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.DisplayName)
+            @Html.DisplayFor(model => model.User.Email)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="RecipeId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> 
-        <a asp-action="ShowRecipes"  class="btn btn-info">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>
