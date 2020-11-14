@@ -26,7 +26,7 @@
 		   - Microsoft Visual Studio, ASP.NET <br>
 		   - SQL Database (minimum of 5 tables required). <br>
 		 FEATURES <br>
-		  - Visitors can view a samole list of recipes <br>
+		  - Visitors can view a sample list of recipes <br>
 		  - Only registered users may upload recipes <br>
 		  - Registered users can view, edit and delete their own recipes <br>
 		  - Web App Administrator will have complete control over all recipes <br>
