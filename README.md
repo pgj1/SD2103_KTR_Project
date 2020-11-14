@@ -9,7 +9,7 @@
         </h1>
    <p>
    <!-- Description below -->
-        Final Projet: Create a new Web Applicaiton from scratch. <br>
+        Final Projet: Create a new web applicaiton from scratch. <br>
 		App Name: Kitchen Table Recipes (KTR) <br>
 		Description: Most of us have slips of paper with recipes given to us from friends, 
 		co-workers and family. How do we store them? How do we find that great tailgating 
@@ -26,7 +26,7 @@
 		   - Microsoft Visual Studio, ASP.NET <br>
 		   - SQL Database (minimum of 5 tables required). <br>
 		 FEATURES <br>
-		  - Visitors can view a list of recipe names and short descriptions <br>
+		  - Visitors can view a samole list of recipes <br>
 		  - Only registered users may upload recipes <br>
 		  - Registered users can view, edit and delete their own recipes <br>
 		  - Web App Administrator will have complete control over all recipes <br>
@@ -35,9 +35,9 @@
           - Login <br>
 		  - Create Profile <br>
 		  - Browse Recipe List <br>
-		  - Manage Recipe (Upload/Create, Edit, Delete) <br>
-		  - Manage Ingredients (Upload/Create, Edit, Delete) <br>
-		  - Manage Procedures (Upload/Create, Edit, Delete) <br>  
+		  - Manage Recipe (Create, Edit, Delete) <br>
+		  - Manage Ingredients (Create, Edit, Delete) <br>
+		  - Manage Instructions (Create, Edit, Delete) <br>  
 		 <br>
      </p>
   </body>

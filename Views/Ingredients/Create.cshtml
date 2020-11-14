@@ -3,7 +3,7 @@
 @inject UserManager<IdentityUser> userManager
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add Ingredient";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -49,14 +49,14 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Add Ingredient" class="btn btn-success" />
+                <input type="submit" value="Add Ingredient" class="btn btn-success HomeText" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-controller="Ingredients" asp-action="ShowIngredients" class="btn btn-info" asp-route-id="@ViewBag.SavedRecipeId">Back to List</a>
+    <a asp-controller="Ingredients" asp-action="ShowIngredients" class="btn btn-info HomeText" asp-route-id="@ViewBag.SavedRecipeId">Back to List</a>
 
 </div>
 

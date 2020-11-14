@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<KTR.Models.Users>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "User Profiles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2 class="flextop">Admin View - All User Profiles</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New User Profile</a>
 </p>
 <table class="table">
     <thead>
@@ -42,9 +42,10 @@
                 @Html.DisplayFor(modelItem => item.DisplayName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
+                <a asp-action="AdminEdit" asp-route-id="@item.UserId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a> |
+                <a asp-controller="Recipes" asp-action="AdminCreate" asp-route-id="@item.UserId">Create Recipe </a>
             </td>
         </tr>
 }

@@ -46,18 +46,19 @@ namespace KTR.Controllers
         // *********************************************************************************************************
         //                                          GET: Ingredients/Show/5
         // *********************************************************************************************************
-        public async Task<IActionResult> Show(int? iid)
+        [Authorize]
+        public async Task<IActionResult> Show(int? id)
         {
-            ViewBag.SavedIngredientId = iid;
+            ViewBag.SavedIngredientId = id;
 
-            if (iid == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var ingredients = await _context.Ingredients
                 .Include(i => i.Recipe)
-                .FirstOrDefaultAsync(m => m.IngredientId == iid);
+                .FirstOrDefaultAsync(m => m.IngredientId == id);
             if (ingredients == null)
             {
                 return NotFound();
@@ -95,6 +96,7 @@ namespace KTR.Controllers
         //                                              GET: Ingredients/Create
         // *********************************************************************************************************
 
+        [Authorize]
         public IActionResult Create(int? id)
         {
             ViewData["RecipeId"] = new SelectList(_context.Recipes, "Id", "Id");
@@ -131,7 +133,7 @@ namespace KTR.Controllers
         // *********************************************************************************************************
         //                                          GET: Ingredients/Edit/5
         // *********************************************************************************************************
-
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             ViewBag.SavedIngredientId = id;

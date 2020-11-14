@@ -43,14 +43,14 @@
                 <span asp-validation-for="PRegId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save Changes" class="btn btn-success" />
+                <input type="submit" value="Save Changes" class="btn btn-success HomeText" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="MyPrep" class="btn btn-info" asp-route-id="@ViewBag.SavedRecipeId">Back to Instructions</a>
+    <a asp-action="MyPrep" class="btn btn-info HomeText" asp-route-id="@ViewBag.SavedRecipeId">Back to Instructions</a>
 </div>
 
 @section Scripts {

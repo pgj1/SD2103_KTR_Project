@@ -1,17 +1,21 @@
 ﻿@model KTR.Models.Recipes
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Admin Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2 class="flextop">Admin View Create New Recipe</h2>
 
-<h4>Recipes</h4>
+<h4>
+    Creating recipe on behalf of: User  @ViewBag.SavedUserId (@ViewBag.RegNum)
+     
+</h4>
+<p> Note: If the above line doesn't have the user id number, go to the <a asp-controller="Users" asp-action="Index">user list</a> and start this process from there. </p>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="AdminCreate">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="RecipeName" class="control-label"></label>
@@ -20,7 +24,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <input asp-for="UserId" class="form-control" value="@ViewBag.SavedUserId" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Servings" class="control-label"></label>
@@ -51,17 +56,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="RegId" class="control-label"></label>
-                <input asp-for="RegId" class="form-control" />
+                <input asp-for="RegId" class="form-control" value="@ViewBag.RegNum" />
                 <span asp-validation-for="RegId" class="text-danger"></span>
+                
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-success HomeText" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Recipe List</a>
 </div>
 

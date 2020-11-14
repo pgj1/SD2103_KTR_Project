@@ -1,10 +1,14 @@
 ﻿@model KTR.Models.Recipes
 @using Microsoft.AspNetCore.Identity;
+@using System.Collections.Generic;
+@using System.Linq;
+@using System.Text;
+@using System.Threading;
 @inject UserManager<IdentityUser> userManager
 
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Recipe";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,7 +18,7 @@
 
 @*<h4>New Recipe</h4>*@
 <div class="col-sm-12">
-    After completing your recipe description, you can enter your ingredient list on the next page. 
+    After completing your recipe description, you can enter your ingredient list from the details page.
 </div>
 
 <div class="col-md-12 text-danger">All fields marked with an asterisk (*) are required.</div>
@@ -56,20 +60,19 @@
 
             <div class="form-group">
                 <label asp-for="MainId" class="control-label"></label>
-                <select asp-for="MainId" class="form-control" asp-items="ViewBag.MainId"> </select>
+                <select asp-for="MainId" class="form-control" asp-items="@ViewBag.MainId"> </select>
                 <span asp-validation-for="MainId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="UserId" class="control-label">*Display Name</label>
-                @*<Input asp-for="UserId" class="form-control" value="@userManager.GetUserName(User)" />*@
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"> </select>
+                <label asp-for="UserId" class="control-label">*User Number</label>
+                <Input asp-for="UserId" class="form-control" value = "@ViewBag.FormId" />
                 <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="RegId" class="control-label">*Registration Id</label>
-                <input readonly="readonly" asp-for="RegId" class="form-control" value="@userManager.GetUserId(User)" />
+                @*<label asp-for="RegId" class="control-label">*Registration Id</label>*@
+                <input type="hidden"  readonly="readonly" asp-for="RegId" class="form-control" value="@userManager.GetUserId(User)" />
                 @*<span asp-validation-for="RegId" class="text-danger"></span>*@
             </div>
 
@@ -79,8 +82,8 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" />
-                <a asp-action="ShowRecipes" class="btn btn-danger">Cancel</a>
+                <input type="submit" value="Create" class="btn btn-success HomeText" />
+                <a asp-action="ShowRecipes" class="btn btn-danger HomeText">Cancel</a>
 
 
             </div>
@@ -89,17 +92,20 @@
 </div>
 
 <div>
-   @* <a asp-action="ShowRecipes" class="btn btn-danger">Cancel</a> *@
+    @* <a asp-action="ShowRecipes" class="btn btn-danger HomeText">Cancel</a> *@
 
     @*<input type="button" value="GO BACK" class="btn btn-default"
-           onclick="location.href='%Request.UrlReferrer'" />*@
+        onclick="location.href='%Request.UrlReferrer'" />*@
 
-   
+
 
 </div>
 
+
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 }
 
 
